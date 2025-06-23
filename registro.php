@@ -8,12 +8,24 @@ include ("conexion.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventra Web - Asignar Equipo</title>
-    <link rel="stylesheet" href="estilo_asignar.css">
+    <link rel="stylesheet" href="estilo_registro.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 
 <body>
+    <div class="barrasuperior">
+        <div class="busqueda">
+            <input type="text" placeholder="Buscar...">
+            <button type="submit"><i class='bx bx-search'></i></button>
+        </div>
+
+        <div class="acciones">
+            <i class='bx bx-bell'></i>
+            <i class='bx bx-user'></i>
+        </div>
+    </div>
+    
     <aside class="lateral">
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
@@ -23,6 +35,7 @@ include ("conexion.php");
             <img src="imagenes/detalle1.png" alt="">
         </div>
 
+    
     <div class="menu-item">
 
          <a class="secciones" href="dash.html"><i class='bx bxs-home' ></i>PANEL</a>
