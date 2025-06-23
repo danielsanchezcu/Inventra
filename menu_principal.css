@@ -1,0 +1,204 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  body {
+    display: flex;
+    height: 100vh;
+    background: #f5f7fa;
+  }
+
+  .barrasuperior {
+  position: fixed;
+  left: 210px;
+  width: calc(100% - 210px);
+  height: 50px;
+  background-color: #012e42;
+  display: flex;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.busqueda {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  padding-left: 200px;
+  width: 700px;
+  
+}
+
+.busqueda input {
+  height: 32px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 0px 0 0 0px;
+  box-sizing: border-box;
+}
+
+.busqueda input::placeholder {
+  font-style: italic;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+}
+
+.busqueda button {
+  height: 35px;
+  width: 12px;
+  border-radius: 5px 5px 5px 5px;
+  background-color: #004B6A;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.busqueda button:hover {
+  background-color: #2f80a2;
+  color: #fff;
+  transform: scale(1.05); /* hace que el botón crezca un poco */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 490px; /* espacio entre campana y usuario */
+  margin-right: auto; 
+  margin-left: 25px;   /* separa del buscador */
+}
+
+.acciones i {
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.acciones i:hover {
+  color: #00dffd;
+}
+
+/* Barra lateral */
+
+  .lateral {
+    width: 210px;
+    background-color: #012e42;
+    padding: 20px 0px;
+    left: 0;
+    top: 0;
+  }
+
+  .lateral .logo {
+    text-align: center;
+    margin-bottom: 100px;
+  }
+
+  .lateral img{
+    width: 110px;
+  }
+
+  .detalle1 img{
+    position: absolute;
+    top: 480px;
+    left: 0px;
+    width: 220px;
+    opacity: 0.3;
+    
+  }
+
+
+/* Menú general */
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  gap: 5px;
+}
+
+/* Ítems del menú */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  font-size: 13px;
+}
+
+.menu-item i {
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item, summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.menu-item:hover, summary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-group {
+  border: none;
+  padding: 0;
+}
+
+.menu-group summary {
+  list-style: none; /* Quita la flecha nativa */
+  justify-content: space-between;
+}
+
+.menu-group[open] .arrow {
+  transform: rotate(90deg);
+}
+
+.arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Enlaces del submenú */
+.submenu {
+  display: flex;
+  flex-direction: column; 
+  padding-left: 25px;
+  margin-top: 5px;
+  gap: 7px; 
+}
+
+.submenu a {
+  display: block; 
+  text-decoration: none;
+  color: #c0d5f4;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.submenu a:hover {
+  color: rgb(52, 133, 219);
+}
+
+
+ 

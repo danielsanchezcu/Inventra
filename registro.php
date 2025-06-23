@@ -1,71 +1,18 @@
 <?php
 include ("conexion.php");
+include ("menu_principal.php");
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventra Web - Asignar Equipo</title>
     <link rel="stylesheet" href="estilo_registro.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
 </head>
 
-
-<body>
-    <div class="barrasuperior">
-        <div class="busqueda">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit"><i class='bx bx-search'></i></button>
-        </div>
-
-        <div class="acciones">
-            <i class='bx bx-bell'></i>
-            <i class='bx bx-user'></i>
-        </div>
-    </div>
-    
-    <aside class="lateral">
-        <div class="logo">
-          <img src="imagenes/Logo inventra.png" alt="Logo">
-        </div>
-
-        <div class="detalle1">
-            <img src="imagenes/detalle1.png" alt="">
-        </div>
-
-    
-    <div class="menu-item">
-
-         <a class="secciones" href="dash.html"><i class='bx bxs-home' ></i>PANEL</a>
-          
-        <input type="checkbox" id="inventario-toggle">
-        <label for="inventario-toggle" class="menu-toggle-label">
-        <span><i class='bx bx-desktop'></i>INVENTARIO</span>
-        <span class="arrow">▶</span>
-        </label>
-
-      <div class="submenu">
-        <a class="menu-link" href="registro.php">·Registrar Equipo</a>
-        <a class="menu-link" href="asignar.php">·Asignar Equipo</a>
-        <a class="menu-link" href="consultar.php">·Consultar Inventario</a>
-      </div>
-
-        <a class="secciones" href="mantenimiento.html"><i class='bx bxs-cog'></i>MANTENIMIENTO</a>
-        <a class="secciones"  href="informes.html"><i class='bx bxs-food-menu'></i>INFORMES</a>
-        <a class="secciones" href="inicio.html"><i class='bx bxs-exit'></i>SALIR</a>
-    </div>       
-    </aside>
-    
-    <div class="detalle2">
-        <img src="imagenes/detalle2.png" alt="">
-    </div>
-
-      <main class="main">
+<main class="main">
         <div class="main-header">
-          <h2>REGISTRAR EQUIPO</h2>
-          <h3>INVENTRA</h3>
         </div>
       <div class="form-contenedor">
         <div class="formulario">
