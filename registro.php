@@ -7,7 +7,10 @@ include ("conexion.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-registro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleregistro.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -39,14 +42,14 @@ include ("conexion.php");
     <nav class="menu">
         <a href="dash.html" class="menu-item">
             <i class='bx bxs-home'></i>
-            <span>Dashboard</span>
+            <span>Panel de control</span>
         </a>
 
 <!-- Menú desplegable INVENTARIO -->
     <details class="menu-group">
       <summary>
             <i class='bx bx-desktop'></i>
-            <span>Iventario</span>
+            <span>Dispositivos</span>
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
         <div class="submenu">
@@ -72,14 +75,18 @@ include ("conexion.php");
     </a>
   </nav>
   </aside>
-</body>
+
+ 
 
 <main class="main">
+     <div class="titulo">
+    <h1>Registrar Equipo</h1>
+        </div>
         <div class="main-header">
         </div>
       <div class="form-contenedor">
         <div class="formulario">
-            <h3>REGISTRO DE EQUIPO</h3>
+            <h3>Especificaciones de equipo</h3>
             <form action="registrar_equipo.php" method="POST">
                 <div class="form-usuario">
                     <div class="form-group">
@@ -123,12 +130,31 @@ include ("conexion.php");
                                 <option value="Otro">Otro</option>
                             </select>
                         </div>
-                        
+
+                    <div class="form-group">
+                            <label for="ubicacion_fisica" class="required-field">Ubicación Física</label>
+                            <input type="text" id="ubicacion_fisica" name="ubicacion_fisica" placeholder="Ubicación Física" required>
+                    </div>    
                 
+                    <div class="form-group">
+                            <label for="proveedor" class="required-field">Proveedor</label>
+                            <input type="text" id="proveedor" name="proveedor" placeholder="Proveedor" required>
+                    </div>  
+
+                    <div class="form-group">
+                            <label for="costo" class="required-field">Costo</label>
+                            <input type="text" id="costo" name="costo" placeholder="$" required>
+                    </div>  
+
+                    <div class="form-group">
+                            <label for="numero_factura" class="required-field">Número de factura</label>
+                            <input type="text" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                    </div>  
+
                 </div>
                 
                 <div class="form_equipo">
-                    <h3>ESPECIFICACIONES TECNICAS</h3>
+                    <h3>Especificaciones técnicas</h3>
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="procesador" class="required-field">Procesador</label>
@@ -139,6 +165,8 @@ include ("conexion.php");
                             <label for="sistema_operativo" class="required-field">Sistema Operativo</label>
                             <input type="text" id="sistema_operativo" name="sistema_operativo" placeholder="Sistema Operativo" required>
                         </div>
+
+                
                         
                         <div class="form-group">
                             <label for="ram" class="required-field">Memoria RAM</label>
@@ -183,7 +211,6 @@ include ("conexion.php");
             </form>
         </div>
     </div>
-      </main>
-
+ </main>
 </body>
 </html>
