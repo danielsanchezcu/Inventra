@@ -7,12 +7,16 @@ include ("conexion.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-asignacion.css">
+    <title>Inventra Web - Asignación de Equipo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleasignacion.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
+
 <body>
-     <!-- Barra superior -->
     <div class="barrasuperior">
         <div class="busqueda">
             <input type="text" placeholder="Buscar...">
@@ -24,14 +28,14 @@ include ("conexion.php");
             <i class='bx bx-user'></i>
         </div>
     </div>
-
-     <!-- Barra lateral -->
+    
+<!-- Barra lateral -->
     <aside class="lateral">
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
 
-<!--  Imagen inferior de la barra lateral-->
+<!-- Imagen inferior de la barra lateral-->
         <div class="detalle1">
             <img src="imagenes/detalle1.png" alt=""> 
         </div>
@@ -39,21 +43,21 @@ include ("conexion.php");
     <nav class="menu">
         <a href="dash.html" class="menu-item">
             <i class='bx bxs-home'></i>
-            <span>Dashboard</span>
+            <span>Panel de control</span>
         </a>
 
 <!-- Menú desplegable INVENTARIO -->
     <details class="menu-group">
       <summary>
-        <i class='bx bx-desktop'></i>
-        <span>Inventario</span>
-        <i class='bx bx-chevron-right arrow'></i>
+            <i class='bx bx-desktop'></i>
+            <span>Dispositivos</span>
+            <i class='bx bx-chevron-right arrow'></i>
       </summary>
-      <div class="submenu">
-        <a href="registro.php">· Registrar Equipo</a>
-        <a href="asignar.php">· Asignar Equipo</a>
-        <a href="consultar.php">· Consultar Inventario</a>
-      </div>
+        <div class="submenu">
+            <a href="registro.php">· Registrar Equipo</a>
+            <a href="asignar.php">· Asignar Equipo</a>
+            <a href="consultar.php">· Consultar Inventario</a>
+        </div>
     </details>
 
     <a href="mantenimiento.html" class="menu-item">
@@ -72,18 +76,16 @@ include ("conexion.php");
     </a>
   </nav>
   </aside>
-</body>
-
 
 
 <main class="main">
         <div class="main-header">
-          <h2>ASIGNAR EQUIPO</h2>
+          <h2>Asignación de equipo</h2>
           <h3>INVENTRA</h3>
         </div>
       <div class="form-contenedor">
         <div class="formulario">
-            <h3>USUARIO ASIGNACIÓN</h3>
+            <h3>Usuario asignación</h3>
             <form action="asignar_equipo.php" method="POST" id="asignacionForm">
                 <div class="form-usuario">
                     <div class="form-group">
@@ -119,7 +121,7 @@ include ("conexion.php");
                 </div>
                 
                 <div class="form_equipo">
-                    <h3>DATOS DEL EQUIPO</h3>
+                    <h3>Especificaciones del equipo</h3>
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="equipo" class="required-field">Equipo (Placa de Inventario)</label>

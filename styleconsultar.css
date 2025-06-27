@@ -2,14 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
 
   body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
     display: flex;
     height: 100vh;
     background: #f5f7fa;
-  }
+  } 
 
   .barrasuperior {
   position: fixed;
@@ -116,10 +117,11 @@
 
 /* Menú general */
 .menu {
+  
   display: flex;
   flex-direction: column;
-  padding: 0 15px;
-  gap: 5px;
+  padding: 10px;
+  gap: 12px;
 }
 
 /* Ítems del menú */
@@ -130,7 +132,6 @@
   color: white;
   text-decoration: none;
   padding: 10px;
-  border-radius: 6px;
   transition: background 0.3s ease;
   font-size: 13px;
 }
@@ -149,7 +150,7 @@
   gap: 10px;
   padding: 10px;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   color: white;
   text-decoration: none;
@@ -185,21 +186,22 @@
   flex-direction: column; 
   padding-left: 25px;
   margin-top: 5px;
-  gap: 7px; 
+  gap: 15px; 
 }
 
 .submenu a {
   display: block; 
   text-decoration: none;
-  color: #c0d5f4;
+  color: #b4cef4;
   font-size: 13px;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  
 }
 
 .submenu a:hover {
   color: rgb(52, 133, 219);
 }
-
+/* contenido principal */
 .main {
     flex: 1;
     padding: 30px 40px;

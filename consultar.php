@@ -4,16 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventra Web - Consultar Inventario</title>
-    <link rel="stylesheet" href="style-consultar.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-registro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleconsultar.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -45,14 +39,14 @@
     <nav class="menu">
         <a href="dash.html" class="menu-item">
             <i class='bx bxs-home'></i>
-            <span>Dashboard</span>
+            <span>Panel de control</span>
         </a>
 
 <!-- Menú desplegable INVENTARIO -->
     <details class="menu-group">
       <summary>
             <i class='bx bx-desktop'></i>
-            <span>Inventario</span>
+            <span>Dispositivos</span>
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
         <div class="submenu">
@@ -78,7 +72,7 @@
     </a>
   </nav>
   </aside>
-</body>
+
 
 
 <main class="main">

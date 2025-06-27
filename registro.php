@@ -7,6 +7,7 @@ include ("conexion.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventra Web - Registrar Equipo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -40,7 +41,7 @@ include ("conexion.php");
         </div>
 
     <nav class="menu">
-        <a href="dash.html" class="menu-item">
+        <a href="panelcontrol.php" class="menu-item">
             <i class='bx bxs-home'></i>
             <span>Panel de control</span>
         </a>
@@ -79,10 +80,9 @@ include ("conexion.php");
  
 
 <main class="main">
-     <div class="titulo">
-    <h1>Registrar Equipo</h1>
-        </div>
         <div class="main-header">
+            <h2>Registrar Equipo</h2>
+            <h3>INVENTRA</h3>
         </div>
       <div class="form-contenedor">
         <div class="formulario">
