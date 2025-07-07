@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -77,7 +78,7 @@
 
 <main class="main">
         <div class="main-header">
-          <h2>CONSULTAR INVENTARIO</h2>
+          <h2>Consultar inventario</h2>
           <h3>INVENTRA</h3>
         </div>  
     <div class="form-section">
@@ -154,7 +155,11 @@ $resultado = $conn->query($consulta);
                             <td><?= $fila['identificacion'] ?></td>
                             <td><?= $fila['fecha_asignacion'] ?></td>
                             <td><?= $fila['fecha_devolucion'] ?></td>
-                            <td><button class="detalle-btn">Ver detalles</button></td>
+                            <td>
+                                <button class="detalle-btn">Editar</button>
+                                <button class="detalle-btn2">Eliminar</button>
+                            </td>
+
                         </tr>
                         <?php endwhile; ?>
                         

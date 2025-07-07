@@ -1,0 +1,149 @@
+* {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #012e42;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contenedor-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+    }
+
+    .logo-inventra {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.logo-inventra img {
+  width: 90px;
+  max-width: 100%;
+  display: inline-block;
+}
+
+
+    .contenedor-login {
+      background-color: #01384f;
+      padding: 45px 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+#mensaje {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  padding: 10px 5px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.mensaje-error {
+  background-color: #ffe6e6;
+  color: #b30000;
+  border: 1px solid #ffb3b3;
+}
+
+.mensaje-exito {
+  background-color: #e6ffe6;
+  color: #006600;
+  border: 1px solid #99ff99;
+}
+
+.mensaje-oculto {
+  display: none;
+}
+
+
+    .contenedor-login h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .grupo-campo {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .grupo-campo input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #f1f1f1;
+      color: #333;
+      font-size: 14px;
+    }
+   
+
+    .grupo-campo i {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      color: #555;
+      font-size: 18px;
+    }
+
+    .boton-ingresar {
+      width: 100%;
+      padding: 12px;
+      background: #017ca4;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .boton-ingresar:hover {
+      background: #00a9dd;
+    }
+
+    .pie-login {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .pie-login a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    .pie-login a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .contenedor-login {
+        margin: 20px;
+      }
+    }
+  
+    .contenedor-principal h3 {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 9px;
+      color: #ccc;
+      font-weight: 300;
+    }
