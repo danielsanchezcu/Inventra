@@ -24,7 +24,7 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
         mensajeDiv.classList.add("mensaje-exito");
 
         setTimeout(() => {
-          window.location.href = "panelcontrol.php";
+          window.location.href = "index.php";
         }, 1500);
       } else {
         mensajeDiv.textContent = data.message;

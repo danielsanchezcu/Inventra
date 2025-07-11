@@ -7,6 +7,24 @@ $usuarios = $conexion->query("SELECT COUNT(*) AS total FROM usuario")->fetch_ass
 $equipos = $conexion->query("SELECT COUNT(*) AS total FROM equipo WHERE estado = 'disponible'")->fetch_assoc()['total'];
 $mantenimiento = $conexion->query("SELECT COUNT(*) AS total FROM equipo WHERE estado = 'mantenimiento'")->fetch_assoc()['total'];
 $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueba WHERE fecha_asignacion >= DATE_SUB(NOW(), INTERVAL 30 DAY)")->fetch_assoc()['total'];
+
+$datosArea = $conexion->query("SELECT area, COUNT(*) as total FROM asignacion_prueba GROUP BY area");
+
+$labels = [];
+$valores = [];
+
+while ($fila = $datosArea->fetch_assoc()) {
+    $labels[] = $fila['area'];
+    $valores[] = $fila['total'];
+}
+
+
+$asignacionesRecientes = $conexion->query("
+  SELECT nombre, apellidos, area, cargo, equipo, fecha_asignacion
+  FROM asignacion_prueba
+  ORDER BY fecha_asignacion DESC
+  LIMIT 5
+");
 ?>
 
 
@@ -19,39 +37,43 @@ $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueb
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styledashboard.css">
+    <link rel="stylesheet" href="styledashb.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
 </head>
 
 
 <body>
     <div class="barrasuperior">
-        <div class="busqueda">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit"><i class='bx bx-search'></i></button>
-        </div>
+  <div class="busqueda">
+    <i class='bx bx-search icono-busqueda'></i>
+    <input type="text" placeholder="Buscar..." />
+  </div>
 
-        <div class="acciones">
-            <i class='bx bx-bell'></i>
-            <i class='bx bx-user'></i>
-        </div>
-    </div>
-    
+  <div class="acciones">
+    <i class='bx bx-bell'></i>
+    <i class='bx bx-user'></i>
+  </div>
+</div>
+
 <!-- Barra lateral -->
     <aside class="lateral">
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
-
-<!-- Imagen inferior de la barra lateral-->
-        <div class="detalle1">
-            <img src="imagenes/detalle1.png" alt=""> 
-        </div>
+       
 
     <nav class="menu">
-        <a href="panelcontrol.php" class="menu-item">
+
+    <a href="index.php" class="menu-item">
             <i class='bx bxs-home'></i>
-            <span>Panel de control</span>
+            <span>Inicio</span>
+        </a>
+
+        <a href="panelcontrol.php" class="menu-item">
+            <i class='bx bx-bar-chart-alt-2'></i>
+            <span>Dashboard</span>
         </a>
 
 <!-- Menú desplegable INVENTARIO -->
@@ -62,18 +84,18 @@ $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueb
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
         <div class="submenu">
-            <a href="registro.php">· Registrar Equipo</a>
-            <a href="asignar.php">· Asignar Equipo</a>
-            <a href="consultar.php">· Consultar Inventario</a>
+            <a href="registro.php"> Registrar Equipo</a>
+            <a href="asignar.php"> Asignar Equipo</a>
+            <a href="consultar.php"> Consultar Inventario</a>
         </div>
     </details>
 
-    <a href="mantenimiento.html" class="menu-item">
+    <a href="mantenimiento.php" class="menu-item">
       <i class='bx bxs-cog'></i>
       <span>Mantenimiento</span>
     </a>
 
-    <a href="informes.html" class="menu-item">
+    <a href="informes.php" class="menu-item">
       <i class='bx bxs-food-menu'></i>
       <span>Informes</span>
     </a>
@@ -86,8 +108,6 @@ $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueb
   </aside>
 
   <div class="contenido-dashboard">
-  <h2 class="titulo-dashboard">Bienvenido a Inventra</h2>
-  <h3> ¡Tu centro de control para equipos y asignaciones! </h3>
   <h4>Dashboard</h4>
 
   <div class="tarjetas">
@@ -116,21 +136,61 @@ $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueb
     </div>
   </div>
 
-    <div class="grafico-container">
-      <canvas id="graficoCircular"></canvas>
+<div class="contenedor-graficos">
+  <div class="grafico-container">
+    <canvas id="graficoCircular"></canvas>
+  </div>
+
+  <div class="grafico-barras-container">
+    <canvas id="graficoBarras"></canvas>
+
+    <!-- Aquí insertamos la tabla debajo -->
+    <div class="tabla-asignaciones-container">
+      <h4>Asignaciones recientes</h4>
+      <table class="tabla-asignaciones">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Área</th>
+            <th>Cargo</th>
+            <th>Equipo</th>
+            <th>Fecha de asignación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($fila = $asignacionesRecientes->fetch_assoc()): ?>
+            <tr>
+              <td><?= $fila['nombre'] ?></td>
+              <td><?= $fila['apellidos'] ?></td>
+              <td><?= $fila['area'] ?></td>
+              <td><?= $fila['cargo'] ?></td>
+              <td><?= $fila['equipo'] ?></td>
+              <td><?= date('d-m-Y', strtotime($fila['fecha_asignacion'])) ?></td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
     </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-  // Datos dinámicos de PHP pasados a JavaScript
-  window.datosGrafico = [<?= $equipos ?>, <?= $mantenimiento ?>, <?= $asignaciones ?>];
-</script>
-<script src="dashboard.js"></script>
-
-  <div class="btn-modulo">
-    <a href="asignar.php">Ir al Módulo de Asignaciones</a>
   </div>
 </div>
+
+  <!-- Datos para gráficos -->
+  <script>
+    // Datos del gráfico circular
+    window.datosGrafico = [<?= $equipos ?>, <?= $mantenimiento ?>, <?= $asignaciones ?>];
+
+    // Datos del gráfico de barras
+    const labelsBarras = <?= json_encode($labels); ?>;
+    const valoresBarras = <?= json_encode($valores); ?>;
+  </script>
+
+  <!-- Cargar Chart.js solo una vez -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tu script principal -->
+  <script src="dashboard.js"></script>
+
 
 
 
