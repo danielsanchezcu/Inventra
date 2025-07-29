@@ -353,6 +353,43 @@ button:hover {
   }
 }
 
+#checkSuccess {
+  animation: fadeInOut 2s ease-in-out;
+  z-index: 999;
+}
+
+
+.mensaje-respuesta {
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 400;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(-10px);
+}
+
+.mensaje-respuesta.success {
+  background-color: #e6ffed;
+  color: #237804;
+  border: 1px solid #b7eb8f;
+}
+
+.mensaje-respuesta.error {
+  background-color: #fff2f0;
+  color: #a8071a;
+  border: 1px solid #ffa39e;
+}
+
+.mensaje-respuesta.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 
 /* === RESPONSIVE === */

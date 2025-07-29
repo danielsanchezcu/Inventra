@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="asignacion_equipos.css">
+    <link rel="stylesheet" href="styleasignacion.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -87,13 +87,13 @@
     <h3 class="titulo-seccion">
       <i class="bx bx-user"></i> Información del usuario
     </h3>
-
+    
     <form action="asignar_equipo.php" method="POST" id="asignacionForm">
       <div class="form-usuario">
         
         <div class="form-group">
-          <label for="nombre" class="required-field">Nombres</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Ingrese nombres completos" required>
+          <label for="nombres" class="required-field">Nombres</label>
+          <input type="text" id="nombres" name="nombres" placeholder="Ingrese nombres completos" required>
         </div>
         <div class="form-group">
           <label for="apellidos" class="required-field">Apellidos</label>
@@ -147,13 +147,15 @@
         <h3 class="titulo-seccion">
           <i class="bx bx-laptop"></i> Información del equipo
         </h3>
-        <div id="mensaje-error" style="color: red; font-weight: bold; margin-top: 10px;"></div>
         
+
         <div class="form-grid">
           <div class="form-group">
             <label for="placa_inventario" class="required-field">Placa de Inventario</label>
             <input type="text" id="placa_inventario" name="placa_inventario" placeholder="Ej: INV-001" required>
+            <div id="mensaje-error" style="color: red; font-size: 12px; margin-top: 5px;"></div>
           </div>
+          
 
           <div class="form-group">
               <label for="serial" class="required-field">Serial</label>
@@ -209,7 +211,7 @@
       </div>
 
       <div id="mensaje" class="alerta" style="display: none;"></div>
-
+      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
       <div class="buttons">
         <button type="reset">
           <i class="bx bx-x"></i> Cancelar
@@ -222,6 +224,10 @@
   </div>
     </div>
 </main>
+
+
 <script src="asignacion.js"></script>
+<script src="asignar.js"></script>
+
 </body>
 </html>

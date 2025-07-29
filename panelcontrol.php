@@ -6,9 +6,9 @@ include("includes/conexion.php");
 $usuarios = $conexion->query("SELECT COUNT(*) AS total FROM usuario")->fetch_assoc()['total'];
 $equipos = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'disponible'")->fetch_assoc()['total'];
 $mantenimiento = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'mantenimiento'")->fetch_assoc()['total'];
-$asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_prueba WHERE fecha_asignacion >= DATE_SUB(NOW(), INTERVAL 30 DAY)")->fetch_assoc()['total'];
+$asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_equipo WHERE fecha_asignacion >= DATE_SUB(NOW(), INTERVAL 30 DAY)")->fetch_assoc()['total'];
 
-$datosArea = $conexion->query("SELECT area, COUNT(*) as total FROM asignacion_prueba GROUP BY area");
+$datosArea = $conexion->query("SELECT area, COUNT(*) as total FROM asignacion_equipo GROUP BY area");
 
 $labels = [];
 $valores = [];
@@ -20,8 +20,8 @@ while ($fila = $datosArea->fetch_assoc()) {
 
 
 $asignacionesRecientes = $conexion->query("
-  SELECT nombre, apellidos, area, cargo, equipo, fecha_asignacion
-  FROM asignacion_prueba
+  SELECT nombres, apellidos, area, cargo, id_equipo, fecha_asignacion
+  FROM asignacion_equipo
   ORDER BY fecha_asignacion DESC
   LIMIT 5
 ");

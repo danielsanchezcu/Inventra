@@ -1,8 +1,14 @@
 // Máscara para Placa de Inventario (formato fijo INV-###)
-  const placa = document.getElementById('placa_inventario');
-  if (placa) {
-    placa.value = 'INV-';
-    placa.addEventListener('input', function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const placaInput = document.getElementById('placa_inventario');
+  const mensajeError = document.getElementById("mensaje-error");
+
+  if (placaInput) {
+    // Establecer formato inicial
+    placaInput.value = 'INV-';
+
+    // Forzar formato INV-###
+    placaInput.addEventListener('input', function () {
       if (!this.value.startsWith('INV-')) {
         this.value = 'INV-';
       }
@@ -10,36 +16,58 @@
       this.value = 'INV-' + numeros;
     });
 
-    placa.addEventListener('keydown', function (e) {
+    // Evitar borrar el prefijo "INV-"
+    placaInput.addEventListener('keydown', function (e) {
       if (this.selectionStart <= 4 && ['Backspace', 'Delete'].includes(e.key)) {
         e.preventDefault();
       }
     });
-  }
 
+    // Consultar al desenfocar (blur)
+    placaInput.addEventListener("blur", async () => {
+      const placa = placaInput.value.trim();
 
- document.getElementById("placa_inventario").addEventListener("blur", function () {
-  const placa = this.value.trim();
+      // Validar que la placa no esté vacía
+      if (placa === "" || placa === "INV-") {
+        mensajeError.textContent = "⚠️ Placa no proporcionada";
+        limpiarCampos();
+        return;
+      }
 
-  if (placa !== "") {
-    fetch(`api/consultar_equipo.php?placa=${encodeURIComponent(placa)}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById("serial").value = data.equipo.serial;
-          document.getElementById("marca").value = data.equipo.marca;
-          document.getElementById("modelo").value = data.equipo.modelo;
-          document.getElementById("tipo").value = data.equipo.tipo_equipo;
+      try {
+        const response = await fetch("api/consultar_equipo.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ placa })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+          mensajeError.textContent = data.message || "Equipo no encontrado";
+          limpiarCampos();
         } else {
-          alert("⚠️ No se encontró un equipo con esa placa de inventario JAJA.");
-          document.getElementById("serial").value = "";
-          document.getElementById("marca").value = "";
-          document.getElementById("modelo").value = "";
-          document.getElementById("tipo").value = "";
+          mensajeError.textContent = ""; // Limpiar mensaje si es exitoso
+          document.querySelector('input[name="serial"]').value = data.serial;
+          document.querySelector('input[name="marca"]').value = data.marca;
+          document.querySelector('input[name="modelo"]').value = data.modelo;
+          document.querySelector('input[name="tipo"]').value = data.tipo_equipo;
         }
-      })
-      .catch(error => {
-        console.error("Error al consultar el equipo:", error);
-      });
+
+      } catch (error) {
+        mensajeError.textContent = "Error consultando equipo";
+        limpiarCampos();
+      }
+    });
+
+    // Función para limpiar los campos si hay error
+    function limpiarCampos() {
+      document.querySelector('input[name="serial"]').value = "";
+      document.querySelector('input[name="marca"]').value = "";
+      document.querySelector('input[name="modelo"]').value = "";
+      document.querySelector('input[name="tipo"]').value = "";
+    }
   }
 });
