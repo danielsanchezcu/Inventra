@@ -32,7 +32,7 @@
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
-       
+
 
     <nav class="menu">
 
@@ -119,7 +119,7 @@
           <input type="text" id="cargo" name="cargo" placeholder="Ej: Analista de RH" required>
         </div>
 
-       <div class="form-group">
+<div class="form-group">
             <label for="contrato" class="required-field">Tipo de Contrato</label>
             <select id="contrato" name="contrato" required>
               <option value="" disabled selected>Seleccione una opción</option>
@@ -141,7 +141,6 @@
         </div>
       </div>
 
-       
   
       <div class="form_equipo">
         <h3 class="titulo-seccion">
