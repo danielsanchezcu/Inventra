@@ -27,7 +27,7 @@
 
 /* Contenedor de filtros */
 .contenedor-filtros {
-    width: 100%;
+    width: 800px;
     background-color: white;
     padding: 1.2rem;
     border-radius: 8px;
@@ -37,11 +37,11 @@
 
 .contenedor-flex-filtros {
     display: grid;
-    gap: 1rem;
+    gap: 2rem;
     align-items: flex-end;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) { 
     .contenedor-flex-filtros {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
@@ -83,6 +83,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow-x: auto;
     margin-bottom: 1.5rem;
+    
+    
 }
 
 .contenedor-scroll-tabla {
@@ -94,6 +96,7 @@
     width: 100%;
     min-width: 800px;
     border-collapse: collapse;
+    
 }
 
 .encabezado-tabla {
@@ -103,9 +106,9 @@
 
 .celda-encabezado {
     padding: 1rem 1.25rem;
-    text-align: left;
-    font-size: 0.75rem;
-    font-weight: 600;
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 700;
     color: #4a5568;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -114,7 +117,7 @@
 }
 
 .celda-encabezado:hover {
-    background-color: #edf2f7;
+    background-color: #dbe9f8;
 }
 
 .fila-tabla {
@@ -132,8 +135,9 @@
 
 .celda-dato {
     padding: 1rem 1.25rem;
-    font-size: 0.875rem;
-    color: #4a5568;
+    font-size: 0.73rem;
+    color: #000000;
+    font-weight: 300;
     white-space: nowrap;
 }
 

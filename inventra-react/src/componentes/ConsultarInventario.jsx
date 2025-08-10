@@ -141,11 +141,10 @@ const ConsultarInventario = () => {
     const indiceUltimoItem = paginaActual * itemsPorPagina;
     const indicePrimerItem = indiceUltimoItem - itemsPorPagina;
     const itemsActuales = asignacionesFiltradas.slice(indicePrimerItem, indiceUltimoItem);
-    const paginasTotales = Math.ceil(asignacionesFiltradas.length / itemsPorPagina);
 
     const editarAsignacion = (id) => {
-        const asignacion = asignaciones.find(asig => asig.id_asignacion === id);
-        setAsignacionAEditar(asignacion);
+        // Solo enviamos el ID para que el modal consulte todos los datos desde la API
+        setAsignacionAEditar({ id_asignacion: id });
         setModalEditarAbierto(true);
     };
 
@@ -214,6 +213,9 @@ const ConsultarInventario = () => {
                                     <th className="celda-encabezado" onClick={() => solicitarOrden('identificacion')}>
                                         Identificación {obtenerIconoOrden('identificacion')}
                                     </th>
+                                    <th className="celda-encabezado" onClick={() => solicitarOrden('tipo_contrato')}>
+                                        Contrato{obtenerIconoOrden('tipo_contrato')}
+                                    </th>
                                     <th className="celda-encabezado" onClick={() => solicitarOrden('placa_inventario')}>
                                         Placa Inventario {obtenerIconoOrden('placa_inventario')}
                                     </th>
@@ -222,6 +224,9 @@ const ConsultarInventario = () => {
                                     </th>
                                     <th className="celda-encabezado" onClick={() => solicitarOrden('tipo_equipo')}>
                                         Tipo {obtenerIconoOrden('tipo_equipo')}
+                                    </th>
+                                    <th className="celda-encabezado" onClick={() => solicitarOrden('marca')}>
+                                        Marca {obtenerIconoOrden('marca')}
                                     </th>
                                     <th className="celda-encabezado" onClick={() => solicitarOrden('area')}>
                                         Área {obtenerIconoOrden('area')}
@@ -240,9 +245,11 @@ const ConsultarInventario = () => {
                                             <td className="celda-dato">{asignacion.nombres}</td>
                                             <td className="celda-dato">{asignacion.apellidos}</td>
                                             <td className="celda-dato">{asignacion.identificacion}</td>
+                                            <td className="celda-dato">{asignacion.tipo_contrato}</td>
                                             <td className="celda-dato">{asignacion.placa_inventario}</td>
                                             <td className="celda-dato">{asignacion.serial}</td>
                                             <td className="celda-dato">{asignacion.tipo_equipo}</td>
+                                            <td className="celda-dato">{asignacion.marca}</td>
                                             <td className="celda-dato">{asignacion.area}</td>
                                             <td className="celda-dato">{asignacion.fecha_asignacion}</td>
                                             <td className="celda-dato">
@@ -267,7 +274,7 @@ const ConsultarInventario = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="9">
+                                        <td colSpan="11">
                                             <div className="sin-resultados">No se encontraron resultados</div>
                                         </td>
                                     </tr>
