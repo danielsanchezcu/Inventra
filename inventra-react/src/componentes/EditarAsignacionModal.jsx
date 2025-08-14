@@ -65,8 +65,15 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
                     icon: 'success',
                     title: 'Asignación actualizada',
                     text: 'La asignación fue actualizada correctamente.',
+                    timer: 10000,
+                    
                 });
-                onClose();
+
+            onUpdate({
+                    ...formData,
+                    fecha_asignacion: response.data.asignacion?.fecha_asignacion || formData.fecha_asignacion
+                });
+
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -153,23 +160,23 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
                                     <div className="form-grid">
                                         <div className="form-group">
                                             <label htmlFor="placa_inventario" className="required-field">Placa Inventario</label>
-                                            <input type="text" id="placa_inventario" name="placa_inventario" value={formData.placa_inventario} onChange={handleChange} required />
+                                            <input type="text" id="placa_inventario" name="placa_inventario" value={formData.placa_inventario} onChange={handleChange} readOnly/>
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="serial" className="required-field">Serial</label>
-                                            <input type="text" id="serial" name="serial" value={formData.serial} onChange={handleChange} required />
+                                            <input type="text" id="serial" name="serial" value={formData.serial} onChange={handleChange} readOnly />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="marca" className="required-field">Marca</label>
-                                            <input type="text" id="marca" name="marca" value={formData.marca} onChange={handleChange} required />
+                                            <input type="text" id="marca" name="marca" value={formData.marca} onChange={handleChange} readOnly />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="modelo" className="required-field">Modelo</label>
-                                            <input type="text" id="modelo" name="modelo" value={formData.modelo} onChange={handleChange} required />
+                                            <input type="text" id="modelo" name="modelo" value={formData.modelo} onChange={handleChange} readOnly />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="tipo_equipo" className="required-field">Tipo</label>
-                                            <input type="text" id="tipo_equipo" name="tipo_equipo" value={formData.tipo_equipo} onChange={handleChange} required />
+                                            <input type="text" id="tipo_equipo" name="tipo_equipo" value={formData.tipo_equipo} onChange={handleChange} readOnly />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="estado" className="required-field">Estado</label>
@@ -201,8 +208,8 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
                                     </div>
                                 </div>
                                 <div className="buttons">
-                                    <button type="button" className="boton-cancelar" onClick={onClose}>Cancelar</button>
                                     <button type="submit" className="boton-confirmar">Guardar</button>
+                                    <button type="button" className="boton-cancelar" onClick={onClose}>Cancelar</button>
                                 </div>
                             </form>
                         </div>
