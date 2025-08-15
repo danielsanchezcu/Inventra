@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $res_check = $stmt_check->get_result();
 
     if ($res_check->num_rows > 0) {
-        echo json_encode(['success' => false, 'message' => "El equipo $placa ya se encuentra asignado."]);
+        echo json_encode(['success' => false, 'message' => "El equipo <strong>$placa</strong> ya se encuentra <strong>ASIGNADO</strong> a otro usuario"]);
         exit;
     }
 
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 echo json_encode([
 'success' => true,
-'message' => "Equipo $placa asignado correctamente al.\nUsuario $nombres $apellidos"
+'message' => "Equipo <strong>$placa</strong> fue <strong>ASIGNADO</strong> correctamente al usuario <strong>$nombres $apellidos<strong>"
 ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error al registrar: ' . $stmt_insert->error]);

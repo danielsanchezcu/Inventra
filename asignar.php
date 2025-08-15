@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styleasignacion.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="asignacion.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -81,13 +82,13 @@
 <div class="main-header">
   <h2>Asignación de equipo</h2>
 </div>
-
 <div class="form-contenedor">
   <div class="formulario">
     <h3 class="titulo-seccion">
       <i class="bx bx-user"></i> Información del usuario
     </h3>
-    
+      <div id="mensaje" class="alerta" style="display: none;"></div>
+      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
     <form action="asignar_equipo.php" method="POST" id="asignacionForm">
       <div class="form-usuario">
         
@@ -209,8 +210,7 @@
         </div>
       </div>
 
-      <div id="mensaje" class="alerta" style="display: none;"></div>
-      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
+
       <div class="buttons">
         <button type="reset">
           <i class="bx bx-x"></i> Cancelar

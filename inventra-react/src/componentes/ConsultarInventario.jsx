@@ -152,7 +152,7 @@ const ConsultarInventario = () => {
   const itemsActuales = asignacionesFiltradas.slice(indicePrimerItem, indiceUltimoItem);
 
   const editarAsignacion = (id) => {
-    // Solo enviamos el ID; el modal trae los datos
+    
     setAsignacionAEditar({ id_asignacion: id });
     setModalEditarAbierto(true);
   };
@@ -334,9 +334,9 @@ const ConsultarInventario = () => {
                   asig.id_asignacion === actualizada.id_asignacion ? actualizada : asig
                 )
               );
-              // 2) Cierra el modal
+              // Cierra el modal
               setModalEditarAbierto(false);
-              // 3) Refresca la tabla desde la API (estado real en BD)
+              // Refresca la tabla desde la API (estado real en BD)
               fetchAsignaciones();
             }}
           />

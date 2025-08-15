@@ -360,29 +360,33 @@ button:hover {
 
 
 .mensaje-respuesta {
-  max-width: 600px;
-  margin: 10px auto;
-  padding: 15px 20px;
-  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 16px 20px;
+  border-radius: 12px;
   font-weight: 400;
   text-align: center;
-  font-size: 14px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  transform: translateY(-10px);
+  transform: translateY(-12px);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .mensaje-respuesta.success {
-  background-color: #e6ffed;
-  color: #237804;
-  border: 1px solid #b7eb8f;
+  background: linear-gradient(135deg, #e6ffed, #f6fffa);
+  color: #1b5e20;
+  border: 1px solid #a5d6a7;
 }
 
 .mensaje-respuesta.error {
-  background-color: #fff2f0;
-  color: #a8071a;
-  border: 1px solid #ffa39e;
+  background: linear-gradient(135deg, #fff2f0, #fff9f9);
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
 }
 
 .mensaje-respuesta.visible {

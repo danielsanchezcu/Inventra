@@ -14,22 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-   const formData = {
-    placa_inventario: placa,
-    nombres,
-    apellidos,
-    identificacion,
-    correo_electronico: document.getElementById('correo').value,
-    tipo_contrato: document.getElementById('contrato').value,
-    cargo: document.getElementById('cargo').value,
-    area: document.getElementById('area').value,
-    sede: document.getElementById('sede').value,
-    extension_telefono: document.getElementById('extension').value,
-    accesorios_adicionales: document.getElementById('accesorios').value,
-    fecha_asignacion: document.getElementById('fecha_asignacion').value,
-    fecha_devolucion: document.getElementById('fecha_devolucion').value,
-    observaciones: document.getElementById('observaciones').value,
-};
+    const formData = {
+      placa_inventario: placa,
+      nombres,
+      apellidos,
+      identificacion,
+      correo_electronico: document.getElementById('correo').value,
+      tipo_contrato: document.getElementById('contrato').value,
+      cargo: document.getElementById('cargo').value,
+      area: document.getElementById('area').value,
+      sede: document.getElementById('sede').value,
+      extension_telefono: document.getElementById('extension').value,
+      accesorios_adicionales: document.getElementById('accesorios').value,
+      fecha_asignacion: document.getElementById('fecha_asignacion').value,
+      fecha_devolucion: document.getElementById('fecha_devolucion').value,
+      observaciones: document.getElementById('observaciones').value,
+    };
 
     try {
       const response = await fetch('api/api_asignacion.php', {
@@ -46,12 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const result = await response.json();
 
-      if (result.status === 'success') {
+    
+      if (result.success) {
         mostrarMensajeEnPantalla('✅ ' + result.message, true);
         form.reset();
-        } else {
+      } else {
         mostrarMensajeEnPantalla('❌ ' + result.message, false);
-        }       
+      }
+
     } catch (error) {
       mostrarMensajeEnPantalla('⚠️ Error al enviar la asignación: ' + error.message, false);
     }
@@ -63,20 +65,21 @@ function mostrarMensajeEnPantalla(mensaje, esExito = true) {
 
   contenedor.className = 'mensaje-respuesta'; // Reinicia clases
   contenedor.classList.add(esExito ? 'success' : 'error');
- contenedor.innerHTML = mensaje;
+  contenedor.innerHTML = mensaje;
+  contenedor.style.whiteSpace = 'pre-line'; 
 
   // Mostrar con animación
   setTimeout(() => contenedor.classList.add('visible'), 10);
 
   // Scroll suave hacia el mensaje
-   contenedor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  contenedor.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   // Ocultar después de 20 segundos
- setTimeout(() => {
-  contenedor.classList.remove('visible');
   setTimeout(() => {
-    contenedor.innerHTML = mensaje;
-    contenedor.className = 'mensaje-respuesta'; // Limpiar clases
-  }, 500);
-}, 40000);
+    contenedor.classList.remove('visible');
+    setTimeout(() => {
+      contenedor.innerHTML = '';
+      contenedor.className = 'mensaje-respuesta'; // Limpiar clases
+    }, 500);
+  }, 40000);
 }

@@ -44,13 +44,13 @@ if (!password_verify($contrasena, $usuario['contrasena'])) {
     exit;
 }
 
-// Verificar permisos
+// Validación de permisos
 if ($usuario['permisos'] !== 'administrador') {
     echo json_encode(["success" => false, "message" => "No tienes permisos para acceder"]);
     exit;
 }
 
-// Si todo es válido, enviar respuesta de éxito
+
 echo json_encode([
     "success" => true,
     "id_usuario" => $usuario['id_usuario'],
