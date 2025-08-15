@@ -24,54 +24,87 @@ if (!$data) {
     exit;
 }
 
-$id_asignacion = $conexion->real_escape_string($data['id_asignacion']);
-$id_equipo = $conexion->real_escape_string($data['id_equipo']); // Lo mandas desde el modal
-$nombres = $conexion->real_escape_string($data['nombres']);
-$apellidos = $conexion->real_escape_string($data['apellidos']);
-$identificacion = $conexion->real_escape_string($data['identificacion']);
-$cargo = $conexion->real_escape_string($data['cargo']);
-$sede = $conexion->real_escape_string($data['sede']);
-$correo = $conexion->real_escape_string($data['correo']);
-$contrato = $conexion->real_escape_string($data['contrato']);
-$extension = $conexion->real_escape_string($data['extension']);
-$accesorios = $conexion->real_escape_string($data['accesorios']);
-$observaciones = $conexion->real_escape_string($data['observaciones']);
-$area = $conexion->real_escape_string($data['area']);
-$estado = $conexion->real_escape_string($data['estado']);
+$id_asignacion          = $data['id_asignacion'] ?? null;
+$id_equipo              = $data['id_equipo'] ?? null;
+$nombres                = $data['nombres'] ?? '';
+$apellidos              = $data['apellidos'] ?? '';
+$identificacion         = $data['identificacion'] ?? '';
+$cargo                  = $data['cargo'] ?? '';
+$sede                   = $data['sede'] ?? '';
+$correo_electronico     = $data['correo_electronico'] ?? '';
+$tipo_contrato          = $data['tipo_contrato'] ?? '';
+$extension_telefono     = $data['extension_telefono'] ?? '';
+$accesorios_adicionales = $data['accesorios_adicionales'] ?? '';
+$observaciones          = $data['observaciones'] ?? '';
+$area                   = $data['area'] ?? '';
+$fecha_asignacion       = $data['fecha_asignacion'] ?? '';
+$estado                 = $data['estado'] ?? '';
 
-// Iniciar transacción
+if (!$id_asignacion || !$id_equipo) {
+    echo json_encode(["success" => false, "message" => "ID de asignación o equipo no especificado"]);
+    exit;
+}
+
 $conexion->begin_transaction();
 
 try {
-    // 1. Actualizar asignación
-    $query1 = "UPDATE asignacion_equipo SET 
-        nombres = '$nombres',
-        apellidos = '$apellidos',
-        identificacion = '$identificacion',
-        cargo = '$cargo',
-        sede = '$sede',
-        correo = '$correo',
-        contrato = '$contrato',
-        extension = '$extension',
-        accesorios = '$accesorios',
-        observaciones = '$observaciones',
-        area = '$area'
-        WHERE id_asignacion = '$id_asignacion'";
+    // UPDATE usando COALESCE(NULLIF(?,''), campo) para no sobreescribir con vacío
+    $query1 = "UPDATE asignacion_equipo SET
+        nombres                = COALESCE(NULLIF(?, ''), nombres),
+        apellidos              = COALESCE(NULLIF(?, ''), apellidos),
+        identificacion         = COALESCE(NULLIF(?, ''), identificacion),
+        cargo                  = COALESCE(NULLIF(?, ''), cargo),
+        sede                   = COALESCE(NULLIF(?, ''), sede),
+        correo_electronico     = COALESCE(NULLIF(?, ''), correo_electronico),
+        tipo_contrato          = COALESCE(NULLIF(?, ''), tipo_contrato),
+        extension_telefono     = COALESCE(NULLIF(?, ''), extension_telefono),
+        accesorios_adicionales = COALESCE(NULLIF(?, ''), accesorios_adicionales),
+        observaciones          = COALESCE(NULLIF(?, ''), observaciones),
+        area                   = COALESCE(NULLIF(?, ''), area),
+        fecha_asignacion       = COALESCE(NULLIF(?, ''), fecha_asignacion)
+    WHERE id_asignacion = ?";
 
-    if (!$conexion->query($query1)) {
-        throw new Exception("Error al actualizar asignación: " . $conexion->error);
+    $stmt1 = $conexion->prepare($query1);
+    if (!$stmt1) {
+        throw new Exception("Error al preparar query1: " . $conexion->error);
     }
 
-    // 2. Actualizar estado del equipo
-    $query2 = "UPDATE registro_equipos SET 
-        estado = '$estado'
-        WHERE id = '$id_equipo'";
+    $stmt1->bind_param(
+        "ssssssssssssi",
+        $nombres,
+        $apellidos,
+        $identificacion,
+        $cargo,
+        $sede,
+        $correo_electronico,
+        $tipo_contrato,
+        $extension_telefono,
+        $accesorios_adicionales,
+        $observaciones,
+        $area,
+        $fecha_asignacion,
+        $id_asignacion
+    );
 
-    if (!$conexion->query($query2)) {
-        throw new Exception("Error al actualizar equipo: " . $conexion->error);
+    if (!$stmt1->execute()) {
+        throw new Exception("Error al ejecutar query1: " . $stmt1->error);
     }
 
-    // Confirmar cambios
+    // Actualizar estado del equipo (si viene vacío, no cambia)
+    $query2 = "UPDATE registro_equipos
+                SET estado = COALESCE(NULLIF(?, ''), estado)
+                WHERE id = ?";
+
+    $stmt2 = $conexion->prepare($query2);
+    if (!$stmt2) {
+        throw new Exception("Error al preparar query2: " . $conexion->error);
+    }
+    $stmt2->bind_param("si", $estado, $id_equipo);
+
+    if (!$stmt2->execute()) {
+        throw new Exception("Error al ejecutar query2: " . $stmt2->error);
+    }
+
     $conexion->commit();
     echo json_encode(["success" => true, "message" => "Asignación y estado actualizados correctamente"]);
 
@@ -81,4 +114,3 @@ try {
 }
 
 $conexion->close();
-?>

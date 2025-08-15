@@ -226,3 +226,35 @@ input[readonly] {
     background-color: #f3f3f3;
     cursor: not-allowed;
 }
+
+
+.my-swal-popup {
+    font-size: 0.8rem;
+    padding: 1rem;
+    border-radius: 15px;
+    
+}
+
+.my-swal-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.my-swal-text {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #666;
+}
+
+.my-swal-btn {
+    background-color:#012e42;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+}
+
+.my-swal-btn:hover {
+    background-color: #1f5169;
+}

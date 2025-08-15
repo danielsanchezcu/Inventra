@@ -62,12 +62,18 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
             if (response.data.success) {
                 onUpdate(formData);
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Asignación actualizada',
-                    text: 'La asignación fue actualizada correctamente.',
-                    timer: 10000,
-                    
-                });
+                icon: 'success',
+                title: 'Asignación actualizada',
+                text: 'La asignación fue actualizada correctamente.',
+                timer: 5000,
+                customClass: {
+                popup: 'my-swal-popup',
+                title: 'my-swal-title',
+                htmlContainer: 'my-swal-text',
+                confirmButton: 'my-swal-btn'
+                
+    }
+});
 
             onUpdate({
                     ...formData,
@@ -137,10 +143,10 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
                                         <label htmlFor="tipo_contrato" className="required-field">Contrato</label>
                                         <select id="tipo_contrato" name="tipo_contrato" value={formData.tipo_contrato} onChange={handleChange} required>
                                             <option value="" disabled>Seleccione una opción</option>
-                                            <option value="planta">Planta</option>
-                                            <option value="prestacion">Prestación de servicios</option>
-                                            <option value="pasante">Pasante</option>
-                                            <option value="temporal">Temporal</option>
+                                            <option value="Planta">Planta</option>
+                                            <option value="Prestación de servicios">Prestación de servicios</option>
+                                            <option value="Pasante">Pasante</option>
+                                            <option value="Temporal">Temporal</option>
                                         </select>
                                     </div>
                                     <div className="form-group">

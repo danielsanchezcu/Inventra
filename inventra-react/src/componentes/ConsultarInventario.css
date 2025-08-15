@@ -9,6 +9,7 @@
     padding-bottom: 1.5rem;
     box-sizing: border-box;
     overflow-x: hidden;
+    
 }
 
 .contenedor-principal {
@@ -59,6 +60,7 @@
     color: #4a5568;
     margin-bottom: 0.5rem;
     font-weight: 500;
+    
 }
 
 .entrada-busqueda {
@@ -66,15 +68,17 @@
     padding: 0.625rem 1rem;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    font-size: 0.9375rem;
+    font-size: 0.7rem;
     transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .entrada-busqueda:focus {
-    border-color: #4299e1;
-    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-    outline: none;
+    border-color:#012e42;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+    outline:none;
 }
+
 
 /* Estilos de la tabla */
 .contenedor-tabla {
@@ -242,20 +246,21 @@ color: #e53e3e;
     padding-left: 205px;
 }
 
-.contenedor-modal {
+.contenedor-modal-confirmacion {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     margin: 1rem;
     overflow: hidden;
 }
 
 .titulo-modal {
+    background-color: #012e42;
     font-size: 1.125rem;
     font-weight: 600;
-    color: #2d3748;
+    color: #ffffff;
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid #e2e8f0;
 }
@@ -265,12 +270,14 @@ color: #e53e3e;
     color: #4a5568;
     padding: 1.5rem;
     line-height: 1.6;
+    margin-bottom: 5px;
 
 }
 
 .mensaje2-modal {
+    padding: 5px;
     font-size: 13px;
-    font-style:italic;
+    
     color: #000000;
     padding: 1.5rem;
     
@@ -288,38 +295,41 @@ color: #e53e3e;
     padding: 1rem 1.5rem;
     border-top: 1px solid #e2e8f0;
     background-color: #f8fafc;
+    
 }
 
-.boton-cancelar {
+.boton-cancelar-modal {
     padding: 0.5rem 1rem;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    color: #4a5568;
+    color:#012e42;
     background-color: white;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.boton-cancelar:hover {
-    background-color: #edf2f7;
-    border-color: #cbd5e0;
+.boton-cancelar-modal:hover {
+    background-color: #8f8e8e;
+    color: white;
 }
 
-.boton-confirmar {
+.boton-confirmar-modal {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: white;
-    background-color: #f56565;
+    background-color:#012e42;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.boton-confirmar:hover {
+.boton-confirmar-modal:hover {
     background-color: #e53e3e;
 }
 
@@ -336,19 +346,36 @@ color: #e53e3e;
     color: #cbd5e0;
 }
 
-.swal2-title-custom {
-font-size: 15px;
+.my-swal-popup {
+    font-size: 0.8rem;
+    padding: 1rem;
+    border-radius: 15px;
+    
 }
 
-.swal2-text-custom {
-font-size: 14px;
+.my-swal-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
 }
 
-.swal2-confirm-custom {
-font-size: 13px;
-padding: 6px 14px;
+.my-swal-text {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #666;
 }
 
+.my-swal-btn {
+    background-color:#012e42;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+}
+
+.my-swal-btn:hover {
+    background-color: #1f5169;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

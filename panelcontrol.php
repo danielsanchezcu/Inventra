@@ -62,7 +62,7 @@ $asignacionesRecientes = $conexion->query("
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
-       
+
 
     <nav class="menu">
 
@@ -86,7 +86,7 @@ $asignacionesRecientes = $conexion->query("
         <div class="submenu">
             <a href="registro.php"> Registrar Equipo</a>
             <a href="asignar.php"> Asignar Equipo</a>
-            <a href="consultar.php"> Consultar Inventario</a>
+            <a href="http://localhost:3000"> Consultar Inventario</a>
         </div>
     </details>
 
