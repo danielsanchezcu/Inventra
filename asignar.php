@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="asignacion.css">
+    <link rel="stylesheet" href="styleasignacion.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -33,7 +32,7 @@
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
-
+       
 
     <nav class="menu">
 
@@ -82,13 +81,13 @@
 <div class="main-header">
   <h2>Asignación de equipo</h2>
 </div>
+
 <div class="form-contenedor">
   <div class="formulario">
     <h3 class="titulo-seccion">
       <i class="bx bx-user"></i> Información del usuario
     </h3>
-      <div id="mensaje" class="alerta" style="display: none;"></div>
-      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
+    
     <form action="asignar_equipo.php" method="POST" id="asignacionForm">
       <div class="form-usuario">
         
@@ -120,7 +119,7 @@
           <input type="text" id="cargo" name="cargo" placeholder="Ej: Analista de RH" required>
         </div>
 
-<div class="form-group">
+       <div class="form-group">
             <label for="contrato" class="required-field">Tipo de Contrato</label>
             <select id="contrato" name="contrato" required>
               <option value="" disabled selected>Seleccione una opción</option>
@@ -142,6 +141,7 @@
         </div>
       </div>
 
+       
   
       <div class="form_equipo">
         <h3 class="titulo-seccion">
@@ -210,7 +210,8 @@
         </div>
       </div>
 
-
+      <div id="mensaje" class="alerta" style="display: none;"></div>
+      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
       <div class="buttons">
         <button type="reset">
           <i class="bx bx-x"></i> Cancelar

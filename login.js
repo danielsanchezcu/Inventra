@@ -20,12 +20,13 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
     })
     .then(data => {
       if (data.success) {
-        mensajeDiv.textContent = "Inicio de sesión exitoso";
-        mensajeDiv.classList.add("mensaje-exito");
+        // mensajeDiv.textContent = "Inicio de sesión exitoso";
+        // mensajeDiv.classList.add("mensaje-exito");
+        location.href = "inicio.php";
 
-        setTimeout(() => {
-          window.location.href = "index.php";
-        }, 1500);
+        // setTimeout(() => {
+        //   window.location.href = "inicio.php";
+        // }, 1500);
       } else {
         mensajeDiv.textContent = data.message;
         mensajeDiv.classList.add("mensaje-error");
