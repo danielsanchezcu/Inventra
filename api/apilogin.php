@@ -38,19 +38,19 @@ if ($result->num_rows !== 1) {
 $usuario = $result->fetch_assoc();
 
 // Verificar contraseña
-
-if (!password_verify($contrasena, $usuario['contrasena'])) {
-    echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
+$hash_generado = password_hash($usuario["contrasena"], PASSWORD_DEFAULT);
+if (!password_verify($contrasena, $hash_generado)) {
+    echo json_encode(["success" => false, "message" => "Usuario y/o Contraseña incorrecta"]);
     exit;
 }
 
-// Validación de permisos
+// Verificar permisos
 if ($usuario['permisos'] !== 'administrador') {
     echo json_encode(["success" => false, "message" => "No tienes permisos para acceder"]);
     exit;
 }
 
-
+// Si todo es válido, enviar respuesta de éxito
 echo json_encode([
     "success" => true,
     "id_usuario" => $usuario['id_usuario'],

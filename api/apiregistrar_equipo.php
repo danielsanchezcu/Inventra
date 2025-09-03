@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $teclado = $_POST['teclado'] ?? null;
     $mouse = $_POST['mouse'] ?? null;
     $estado = $_POST['estado'] ?? 'Disponible';
-    $garantia = $_POST['garantia'] ?? null;
+    $garantia = $_POST['fecha_garantia'] ?? null;
     $procesador = $_POST['procesador'];
     $sistema = $_POST['sistema_operativo'];
     $ram = $_POST['ram'];
@@ -68,25 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($errores)) {
         echo json_encode([
             "success" => false,
-            "message" => implode("<br>", $errores)
+            "message" => implode("\n", $errores)
         ]);
         exit;
     }
 
     // === Insertar registro si no hay duplicados
-    $sql = "INSERT INTO registro_equipos (
-        marca, modelo, serial, placa_inventario, ubicacion_fisica, proveedor,
-        costo, numero_factura, tipo_equipo, teclado, mouse, estado, fecha_garantia,
-        procesador, sistema_operativo, ram, disco_duro, fecha_registro, imagen_equipo, observaciones
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO registro_equipos (marca, modelo, serial, placa_inventario, ubicacion_fisica, proveedor,costo, numero_factura, tipo_equipo, teclado, mouse, estado, fecha_garantia, procesador, sistema_operativo, ram, disco_duro, fecha_registro, imagen_equipo, observaciones) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param(
-        "ssssssdsssssssssssss",
-        $marca, $modelo, $serial, $placa, $ubicacion, $proveedor,
-        $costo, $factura, $tipo, $teclado, $mouse, $estado, $garantia,
-        $procesador, $sistema, $ram, $disco, $fecha_registro, $imagen_nombre, $observaciones
-    );
+    $stmt->bind_param("ssssssdsssssssssssss", $marca, $modelo, $serial, $placa, $ubicacion, $proveedor, $costo, $factura, $tipo, $teclado, $mouse, $estado, $garantia, $procesador, $sistema, $ram, $disco, $fecha_registro, $imagen_nombre, $observaciones);
 
     if ($stmt->execute()) {
         echo json_encode([
