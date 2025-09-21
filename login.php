@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inicio de Sesión | Inventra</title>
+  <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 
   <!-- Estilos -->
   <link rel="stylesheet" href="stylelogin.css">
@@ -41,7 +42,7 @@
         <div id="mensaje" class="mensaje-oculto"></div>
         <button type="submit" class="boton-ingresar">Ingresar</button>
         
-         <!-- Script externo de login (API) -->
+        <!-- Script externo de login (API) -->
         <script src="login.js"></script>
       </form>
 

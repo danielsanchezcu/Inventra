@@ -5,7 +5,7 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
   const contrasena = document.getElementById("contrasena").value;
   const mensajeDiv = document.getElementById("mensaje");
 
-  // Limpiar clases y mensaje previo
+  
   mensajeDiv.classList.remove("mensaje-error", "mensaje-exito", "mensaje-oculto");
   mensajeDiv.textContent = "";
 

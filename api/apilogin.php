@@ -31,7 +31,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows !== 1) {
-    echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
+    echo json_encode(["success" => false, "message" => "Usuario o contraseña incorrectos"]);
     exit;
 }
 
@@ -40,7 +40,7 @@ $usuario = $result->fetch_assoc();
 // Verificar contraseña
 
 if (!password_verify($contrasena, $usuario['contrasena'])) {
-    echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
+    echo json_encode(["success" => false, "message" => "Usuario o contraseña incorrectos"]);
     exit;
 }
 
