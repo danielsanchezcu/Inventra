@@ -1,79 +1,192 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventra Web - Mantenimiento</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="mantenimiento.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<?php 
+    include 'includes/conexion.php';
 
-</head>
+    if ($_POST) {
+        $id=$_POST['id'];
+        $fecha=$_POST["fecha_adquisicion"];
+        $tecnico=$_POST['tecnico'];
+        $tipo=$_POST['tipo'];
+        $estado=$_POST['estado'];
+        $descripcion=$_POST['descripcion'];
+        $repuestos=$_POST['repuesto'];
+        $cantidades=$_POST['cantidad'];
 
+        $conexion = new mysqli($servername, $username, $password, $bd);
+        $sql="select max(id_mantenimiento) as num from mantenimiento";
+        $resultado=$conexion->query($sql);
+        $row = $resultado->fetch_array(MYSQLI_ASSOC);
+        $num=$row["num"]+1;
+        $sql="insert into mantenimiento values('$num','$id','$tecnico', '$fecha', '$tipo', '$estado', '$descripcion')";
+        $conexion->query($sql);
 
-<body>
-<body>
-    <div class="barrasuperior">
-  <div class="busqueda">
-    <i class='bx bx-search icono-busqueda'></i>
-    <input type="text" placeholder="Buscar..." />
-  </div>
+        if ($tipo==='correctivo') {
+            $num_repuestos = count($repuestos);        
+            for ($i=0; $i < $num_repuestos ; $i++) { 
+                $repuesto = htmlspecialchars($repuestos[$i]);
+                $cantidad = htmlspecialchars($cantidades[$i]);
+                $sql="insert into mantenimiento_repuesto values('$num','$repuesto','$cantidad')";
+                $resultado=$conexion->query($sql);
+            }
+        }
+        $msj="";
+        if ($resultado)
+            $msj="Nuevo registro creado exitosamente";
+        else
+            $msj="Error: " . $sql . "<br>" . $conexion->error;
 
-  <div class="acciones">
-    <i class='bx bx-bell'></i>
-    <i class='bx bx-user'></i>
-  </div>
-</div>
+        echo "<script>";
+        echo "document.addEventListener('DOMContentLoaded', (event) => {";
+        echo "document.getElementById('mensaje-texto').textContent = '" . htmlspecialchars($msj, ENT_QUOTES, 'UTF-8') . "';";
+        echo "document.getElementById('mensaje').style.display = 'block';";
+        echo "setTimeout(() => {mensaje.style.display = 'none';}, 1500);";
+        echo "});";
+        echo "</script>";
+    }
+?>
+<?php require("includes/encabezado.php"); ?>
+<link rel="stylesheet" href="mantenimientos.css">
 
-<!-- Barra lateral -->
-    <aside class="lateral">
-        <div class="logo">
-          <img src="imagenes/Logo inventra.png" alt="Logo">
+<main class="main">
+        <div class="main-header">
+            <h2>Mantenimiento de Equipos</h2>
         </div>
-       
+    <div class="form-contenedor">
+        <div class="formulario">
+            <h3 class="titulo-seccion">
+            <i class="fas fa-desktop"></i> Listado de Equipos
+            </h3>
+            <div id="mensaje" class="alerta-flotante" style="display: none;">
+                <span class="cerrar-alerta" onclick="this.parentElement.style.display='none'">✖</span>
+                <span id="mensaje-texto"></span>
+            </div>
 
-    <nav class="menu">
-
-    <a href="index.php" class="menu-item">
-            <i class='bx bxs-home'></i>
-            <span>Inicio</span>
-        </a>
-
-        <a href="panelcontrol.php" class="menu-item">
-            <i class='bx bx-bar-chart-alt-2'></i>
-            <span>Dashboard</span>
-        </a>
-
-<!-- Menú desplegable INVENTARIO -->
-    <details class="menu-group">
-      <summary>
-            <i class='bx bx-desktop'></i>
-            <span>Dispositivos</span>
-            <i class='bx bx-chevron-right arrow'></i>
-      </summary>
-        <div class="submenu">
-            <a href="registro.php"> Registrar Equipo</a>
-            <a href="asignar.php"> Asignar Equipo</a>
-            <a href="consultar.php"> Consultar Inventario</a>
+    <div class="table-container">
+            <table class="table">
+                <thead class="text-center">
+                    <tr>
+                        <th>Placa</th>
+                        <th>Modelo</th>
+                        <th>Serial</th>
+                        <th>Marca</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Procesador</th>
+                        <th>Sistema Operativo</th>
+                        <th>RAM</th>
+                        <th>Disco Duro</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql="select * from registro_equipos WHERE estado='En Mantenimiento'";
+                        $resultado = $conexion->query($sql);
+                        while ($fila = $resultado->fetch_assoc()){
+                            $id=$fila['placa_inventario'];
+                            $a='<input type="radio" name="item" id="item" onclick="edita(\''.$id.'\')">';
+                            echo "<tr><td class='text-center'>".$id."</td><td>".$fila["modelo"]."</td><td>".$fila["serial"]."</td><td>".$fila["marca"]."</td><td>".$fila["tipo_equipo"]."</td><td>".$fila["estado"]."</td><td>".$fila["procesador"]."</td><td>".$fila["sistema_operativo"]."</td><td class='text-center'>".$fila["ram"]."</td><td class='text-center'>".$fila["disco_duro"]."</td><td class='text-center'>".$a."</td></tr>";
+                        }
+                    ?>
+                </tbody>
+            </table>
+    </div>
+            
         </div>
-    </details>
-
-    <a href="mantenimiento.php" class="menu-item">
-      <i class='bx bxs-cog'></i>
-      <span>Mantenimiento</span>
-    </a>
-
-    <a href="informes.php" class="menu-item">
-      <i class='bx bxs-food-menu'></i>
-      <span>Informes</span>
-    </a>
-
-    <a href="inicio.html" class="menu-item">
-      <i class='bx bxs-exit'></i>
-      <span>Salir</span>
-    </a>
-  </nav>
-  </aside>
+        <h3 class="titulo-seccion"><i class="fas fa-microchip"></i> Mantenimiento</h3>
+        <form action="" method="post">
+            <div class="formulariorow">
+                <div class="campos">
+                    <label for="id" class="required-field">Placa Equipo</label>
+                    <input type="text" class="form-control text-end" id="id" name="id" readonly>
+                </div>
+                <div class="campos">
+                    <label for="fecha_adquisicion" class="required-field">Fecha</label>
+                    <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion" required>
+                </div>
+                <div class="campos">
+                    <label for="tecnico" class="required-field">Tecnico Encargado</label>
+                    <select name="tecnico" id="tecnico" class="form-select">
+                        <option value="">Seleccione</option>
+                        <?php
+                            $sql="SELECT * FROM tecnico t INNER JOIN usuario u ON u.id_usuario=t.id_usuario";
+                            $resultado = $conexion->query($sql);
+                            while ($fila = $resultado->fetch_assoc()){
+                                $id=$fila['id_tecnico'];
+                                $nombre=$fila["nombre"];
+                                echo "<option value='$id'>".$nombre."</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="campos">
+                    <label for="tipo" class="required-field">Tipo</label>
+                    <select name="tipo" id="tipo" class="form-select">
+                        <option value="">Seleccione</option>
+                        <option value="preventivo">Preventivo</option>
+                        <option value="correctivo">Correctivo</option>
+                    </select>
+                </div>
+                <div class="campos">
+                    <label for="estado" class="required-field">Estado</label>
+                    <select name="estado" id="estado" class="form-select">
+                        <option value="">Seleccionar</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="completado">En Proceso</option>
+                        <option value="completado">Finalizado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="formulariorepuestos" id="repuestos">
+                <div class="botones-repuestos">
+                    <button type="button" class="boton-agregar" id="agregar">Agregar Repuesto</button>
+                </div>
+                <table class="table table-bordered table-striped" id="tabla">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Repuesto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td>
+                            <select name="repuesto[]" id="repuesto_1" class="form-select" onchange="calcula(this.id)">
+                                <option value="">Seleccione</option>
+                                <?php
+                                    $sql="select * from repuesto";
+                                    $resultado = $conexion->query($sql);
+                                    while ($fila = $resultado->fetch_assoc()){
+                                        $id=$fila['id_repuesto'];
+                                        $nombre=$fila["nombre"];
+                                        $precio=$fila["costo"];
+                                        echo "<option value='$id' data-precio='$precio'>".$nombre."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" id="precio_1" name="precio[]" class="form-control text-end" readonly>
+                        </td>
+                        <td>
+                            <input type="number" id="cantidad_1" name="cantidad[]" min="0" class="form-control text-end" oninput="total(this.id)">
+                        </td>
+                        <td>
+                            <input type="text" id="total_1" name="total[]" class="form-control text-end" readonly>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="descripcion">
+                <label for="descripcion" class="required-field">Descripción del Mantenimiento</label>
+                <textarea name="descripcion" name="descripcion" id="descripcion" class="form-control"></textarea>
+            </div>
+            <div class="botones">
+                <button type="button" class="boton-cancelar" id="btnCancelar">Cancelar</button>
+                <button type="submit" class="boton-guardar" id="btnGuardar">Guardar</button>
+            </div>
+        </form>
+    </div>
+</main>
+<script src="mantenimiento.js"></script>
+<?php require("includes/pie.php"); ?>

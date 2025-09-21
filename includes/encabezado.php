@@ -34,8 +34,7 @@
         <div class="logo">
           <img src="imagenes/Logo inventra.png" alt="Logo">
         </div>
-       
-
+        
     <nav class="menu">
 
     <a href="inicio.php" class="menu-item">
@@ -70,7 +69,7 @@
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
         <div class="submenu">
-            <a href="mantenimiento.php"> Registrar</a>
+            <a href="mantenimiento.php">Registrar Mantenimiento</a>
             <a href=""> Técnicos</a>
             <a href="repuestos.php"> Repuestos</a>
             <a href="listadoMantenimiento.php"> Listado</a>

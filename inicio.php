@@ -26,7 +26,7 @@
       &copy; 2025 Inventra - Todos los derechos reservados
     </footer>
     <footer>
-      <p>Desarrollado por Daniel Felipe Sánchez Currea y Jose Arnulfo Reyes</p>
+      <p>Desarrollado por Daniel Felipe Sánchez Currea</p>
     </footer>
   </div>
 </main>

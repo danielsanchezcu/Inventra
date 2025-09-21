@@ -10,8 +10,8 @@
 	    // Datos del gráfico de barras
 	    const labelsBarras = <?= json_encode($labels); ?>;
 	    const valoresBarras = <?= json_encode($valores); ?>;
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="dashboard.js"></script>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>

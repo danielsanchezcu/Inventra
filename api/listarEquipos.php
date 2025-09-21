@@ -10,7 +10,7 @@
         $data[]=$fila;
     }
     
-   echo json_encode($data);
+echo json_encode($data);
 
     $conexion->close();
 ?>
