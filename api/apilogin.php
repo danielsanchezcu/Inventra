@@ -40,17 +40,17 @@ $usuario = $result->fetch_assoc();
 // Verificar contraseña
 
 if (!password_verify($contrasena, $usuario['contrasena'])) {
-    echo json_encode(["success" => false, "message" => "Usuario o contraseña incorrectos"]);
+    echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
     exit;
 }
 
-// Validación de permisos
+// Verificar permisos
 if ($usuario['permisos'] !== 'administrador') {
     echo json_encode(["success" => false, "message" => "No tienes permisos para acceder"]);
     exit;
 }
 
-
+// Si todo es válido, enviar respuesta de éxito
 echo json_encode([
     "success" => true,
     "id_usuario" => $usuario['id_usuario'],

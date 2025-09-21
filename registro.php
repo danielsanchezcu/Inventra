@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="registro.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 
 </head>
 
@@ -153,23 +152,22 @@
                             <option value="Desktop">Desktop</option>
                             <option value="Laptop">Laptop</option>
                             <option value="WorkStation">WorkStation</option>
-                            <option value="Otro">Otro</option>
+                            <option value="Otro">Otro</option> 
                         </select>
                     </div>
 
                     <div id="perifericos-desktop">
-                         <h3>Periféricos</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="teclado" class="required-field">Teclado</label>
-                                    <input type="text" id="teclado" name="teclado" placeholder="Serial del teclado">
-                                </div>
-
-                                    <div class="form-group">
-                                         <label for="mouse" class="required-field">Mouse</label>
-                                            <input type="text" id="mouse" name="mouse" placeholder="Serial del mouse">
-                                    </div>
-                             </div>
+                        <h3>Periféricos</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="teclado" class="required-field">Teclado</label>
+                                <input type="text" id="teclado" name="teclado" placeholder="Serial del teclado">
+                            </div>
+                            <div class="form-group">
+                                <label for="mouse" class="required-field">Mouse</label>
+                                <input type="text" id="mouse" name="mouse" placeholder="Serial del mouse">
+                            </div>
+                        </div>
                     </div>
 
                      <div class="form-group">
@@ -264,5 +262,4 @@
  </main>
 <script src="formulario.js"></script>
 
-</body>
-</html>
+<?php require("includes/pie.php"); ?>

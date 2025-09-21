@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.value = this.value
         .replace(/[^a-zA-Z0-9]/g, '')
         .toUpperCase()
-        .slice(0, 10);
+        .slice(0, 10); 
     });
   }
 
