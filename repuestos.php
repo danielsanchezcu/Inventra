@@ -1,6 +1,5 @@
 <?php 
     require("includes/encabezado.php");
-
     include 'includes/conexion.php';
 
     $conexion = new mysqli($servername, $username, $password, $bd);
@@ -57,7 +56,7 @@
     }
 ?>
 
-  <main class="main">
+<main class="main">
     <div class="main-header">
         <h2>Gestión de Repuestos</h2>
     </div>

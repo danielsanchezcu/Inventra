@@ -1,66 +1,111 @@
 <?php 
-    include 'includes/conexion.php';
+include 'includes/conexion.php';
 
-    if ($_POST) {
-        $id=$_POST['id'];
-        $fecha=$_POST["fecha_adquisicion"];
-        $tecnico=$_POST['tecnico'];
-        $tipo=$_POST['tipo'];
-        $estado=$_POST['estado'];
-        $descripcion=$_POST['descripcion'];
-        $repuestos=$_POST['repuesto'];
-        $cantidades=$_POST['cantidad'];
+if ($_POST) {
+    $placa = $_POST['id']; 
+    $fecha = $_POST["fecha_adquisicion"];
+    $tecnico_nombre = $_POST['tecnico_nombre'];
+    $tipo = $_POST['tipo'];
+    $estado = $_POST['estado'];
+    $descripcion = $_POST['descripcion'];
+    $repuestos = $_POST['repuesto'] ?? [];
+    $cantidades = $_POST['cantidad'] ?? [];
 
-        $conexion = new mysqli($servername, $username, $password, $bd);
-        $sql="select max(id_mantenimiento) as num from mantenimiento";
-        $resultado=$conexion->query($sql);
-        $row = $resultado->fetch_array(MYSQLI_ASSOC);
-        $num=$row["num"]+1;
-        $sql="insert into mantenimiento values('$num','$id','$tecnico', '$fecha', '$tipo', '$estado', '$descripcion')";
-        $conexion->query($sql);
+    $conexion = new mysqli($servername, $username, $password, $bd);
 
-        if ($tipo==='correctivo') {
-            $num_repuestos = count($repuestos);        
-            for ($i=0; $i < $num_repuestos ; $i++) { 
-                $repuesto = htmlspecialchars($repuestos[$i]);
-                $cantidad = htmlspecialchars($cantidades[$i]);
-                $sql="insert into mantenimiento_repuesto values('$num','$repuesto','$cantidad')";
-                $resultado=$conexion->query($sql);
+    $msj = "";
+    $clase = "";
+
+    // Obtener id del equipo
+    $sql = "SELECT id FROM registro_equipos WHERE placa_inventario = '$placa' LIMIT 1";
+    $resultado = $conexion->query($sql);
+    $row = $resultado->fetch_assoc();
+
+    if (!$row) {
+        $msj = "❌ Error: No se encontró un equipo con la placa $placa";
+        $clase = "error";
+    } else {
+        $id_equipo = $row['id'];
+
+        // Verificar mantenimiento activo
+        $sql_check = "SELECT * FROM mantenimiento WHERE id_equipo = '$id_equipo' AND LOWER(estado) != 'finalizado'";
+        $resultado_check = $conexion->query($sql_check);
+
+        // Bloquea solo si hay mantenimiento activo y el nuevo estado NO es finalizado
+        if ($resultado_check->num_rows > 0 && strtolower($estado) != 'finalizado') {
+            $msj = "❌ Este equipo ya tiene un mantenimiento activo. Finalice el anterior para registrar uno nuevo.";
+            $clase = "error";
+        } else {
+            // Obtener siguiente id_mantenimiento
+            $sql = "SELECT MAX(id_mantenimiento) AS num FROM mantenimiento";
+            $resultado = $conexion->query($sql);
+            $row = $resultado->fetch_array(MYSQLI_ASSOC);
+            $num = $row["num"] + 1;
+
+            // Insertar mantenimiento
+            $sql_insert = "INSERT INTO mantenimiento 
+                (id_mantenimiento, id_equipo, tecnico_nombre, fecha_mantenimiento, tipo, estado, descripcion) 
+                VALUES ('$num','$id_equipo','$tecnico_nombre','$fecha','$tipo','$estado','$descripcion')";
+            $resultado_insert = $conexion->query($sql_insert);
+
+            if ($resultado_insert) {
+                // Insertar repuestos si es correctivo
+                if ($tipo==='correctivo' && !empty($repuestos)) {
+                    $num_repuestos = count($repuestos);        
+                    for ($i=0; $i < $num_repuestos ; $i++) { 
+                        $repuesto = htmlspecialchars($repuestos[$i]);
+                        $cantidad = htmlspecialchars($cantidades[$i]);
+                        $sql="INSERT INTO mantenimiento_repuesto 
+                            (id_mantenimiento, id_repuesto, cantidad) 
+                            VALUES ('$num','$repuesto','$cantidad')";
+                        $conexion->query($sql);
+                    }
+                }
+
+                // Actualizar estado del equipo si se finaliza
+                if (strtolower($estado) == 'finalizado') {
+                    $sql_update_equipo = "UPDATE registro_equipos SET estado = 'Disponible' WHERE id = '$id_equipo'";
+                    $conexion->query($sql_update_equipo);
+                }
+
+                $msj = "✅ Nuevo registro creado exitosamente";
+                $clase = "success";
+            } else {
+                $msj = "❌ Error: " . $conexion->error;
+                $clase = "error";
             }
         }
-        $msj="";
-        if ($resultado)
-            $msj="Nuevo registro creado exitosamente";
-        else
-            $msj="Error: " . $sql . "<br>" . $conexion->error;
-
-        echo "<script>";
-        echo "document.addEventListener('DOMContentLoaded', (event) => {";
-        echo "document.getElementById('mensaje-texto').textContent = '" . htmlspecialchars($msj, ENT_QUOTES, 'UTF-8') . "';";
-        echo "document.getElementById('mensaje').style.display = 'block';";
-        echo "setTimeout(() => {mensaje.style.display = 'none';}, 1500);";
-        echo "});";
-        echo "</script>";
     }
+
+    // Mostrar mensaje
+    echo "<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mensajeBox = document.getElementById('mensaje');
+        const mensajeTexto = document.getElementById('mensaje-texto');
+        mensajeTexto.textContent = '" . htmlspecialchars($msj, ENT_QUOTES, 'UTF-8') . "';
+        mensajeBox.className = 'mensaje-form $clase';
+        mensajeBox.style.display = 'block';
+        setTimeout(() => { mensajeBox.style.display = 'none'; }, 6000);
+    });
+    </script>";
+}
 ?>
 <?php require("includes/encabezado.php"); ?>
 <link rel="stylesheet" href="mantenimientos.css">
 
 <main class="main">
-        <div class="main-header">
-            <h2>Mantenimiento de Equipos</h2>
-        </div>
-    <div class="form-contenedor">
-        <div class="formulario">
-            <h3 class="titulo-seccion">
+    <div class="main-header">
+        <h2>Mantenimiento de Equipos</h2>
+    </div>
+<div class="form-contenedor">
+    <div class="formulario">
+        <h3 class="titulo-seccion">
             <i class="fas fa-desktop"></i> Listado de Equipos
-            </h3>
-            <div id="mensaje" class="alerta-flotante" style="display: none;">
-                <span class="cerrar-alerta" onclick="this.parentElement.style.display='none'">✖</span>
-                <span id="mensaje-texto"></span>
-            </div>
-
-    <div class="table-container">
+        </h3>
+        <div id="mensaje" class="mensaje-form" style="display: none;">
+            <span id="mensaje-texto"></span>
+        </div>
+        <div class="table-container">
             <table class="table">
                 <thead class="text-center">
                     <tr>
@@ -79,67 +124,53 @@
                 </thead>
                 <tbody>
                     <?php
-                        $sql="select * from registro_equipos WHERE estado='En Mantenimiento'";
+                        $sql="SELECT * FROM registro_equipos WHERE estado='En Mantenimiento'";
                         $resultado = $conexion->query($sql);
                         while ($fila = $resultado->fetch_assoc()){
-                            $id=$fila['placa_inventario'];
-                            $a='<input type="radio" name="item" id="item" onclick="edita(\''.$id.'\')">';
-                            echo "<tr><td class='text-center'>".$id."</td><td>".$fila["modelo"]."</td><td>".$fila["serial"]."</td><td>".$fila["marca"]."</td><td>".$fila["tipo_equipo"]."</td><td>".$fila["estado"]."</td><td>".$fila["procesador"]."</td><td>".$fila["sistema_operativo"]."</td><td class='text-center'>".$fila["ram"]."</td><td class='text-center'>".$fila["disco_duro"]."</td><td class='text-center'>".$a."</td></tr>";
+                            $placa=$fila['placa_inventario'];
+                            $a='<input type="radio" name="item" id="item" onclick="edita(\''.$placa.'\')">';
+                            echo "<tr><td class='text-center'>".$placa."</td><td>".$fila["modelo"]."</td><td>".$fila["serial"]."</td><td>".$fila["marca"]."</td><td>".$fila["tipo_equipo"]."</td><td>".$fila["estado"]."</td><td>".$fila["procesador"]."</td><td>".$fila["sistema_operativo"]."</td><td class='text-center'>".$fila["ram"]."</td><td class='text-center'>".$fila["disco_duro"]."</td><td class='text-center'>".$a."</td></tr>";
                         }
                     ?>
                 </tbody>
             </table>
+        </div>       
     </div>
-            
-        </div>
-        <h3 class="titulo-seccion"><i class="fas fa-microchip"></i> Mantenimiento</h3>
-        <form action="" method="post">
-            <div class="formulariorow">
-                <div class="campos">
-                    <label for="id" class="required-field">Placa Equipo</label>
-                    <input type="text" class="form-control text-end" id="id" name="id" readonly>
-                </div>
-                <div class="campos">
-                    <label for="fecha_adquisicion" class="required-field">Fecha</label>
-                    <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion" required>
-                </div>
-                <div class="campos">
-                    <label for="tecnico" class="required-field">Tecnico Encargado</label>
-                    <select name="tecnico" id="tecnico" class="form-select">
-                        <option value="">Seleccione</option>
-                        <?php
-                            $sql="SELECT * FROM tecnico t INNER JOIN usuario u ON u.id_usuario=t.id_usuario";
-                            $resultado = $conexion->query($sql);
-                            while ($fila = $resultado->fetch_assoc()){
-                                $id=$fila['id_tecnico'];
-                                $nombre=$fila["nombre"];
-                                echo "<option value='$id'>".$nombre."</option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="campos">
-                    <label for="tipo" class="required-field">Tipo</label>
-                    <select name="tipo" id="tipo" class="form-select">
-                        <option value="">Seleccione</option>
-                        <option value="preventivo">Preventivo</option>
-                        <option value="correctivo">Correctivo</option>
-                    </select>
-                </div>
-                <div class="campos">
-                    <label for="estado" class="required-field">Estado</label>
-                    <select name="estado" id="estado" class="form-select">
-                        <option value="">Seleccionar</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="completado">En Proceso</option>
-                        <option value="completado">Finalizado</option>
-                    </select>
-                </div>
+    <h3 class="titulo-seccion"><i class="fas fa-tools"></i>Mantenimiento</h3>
+    <form action="" method="post">
+        <div class="formulariorow">
+            <div class="campos">
+                <label for="id" class="required-field">Placa Equipo</label>
+                <input type="text" class="form-control text-end" id="id" name="id" readonly>
             </div>
-            <div class="formulariorepuestos" id="repuestos">
-                <div class="botones-repuestos">
-                    <button type="button" class="boton-agregar" id="agregar">Agregar Repuesto</button>
-                </div>
+            <div class="campos">
+                <label for="fecha_adquisicion" class="required-field">Fecha</label>
+                <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion" required>
+            </div>
+            <div class="campos">
+                <label for="tecnico" class="required-field">Técnico Encargado</label>
+                <input type="text" class="form-control" id="tecnico" name="tecnico_nombre" required>
+            </div>
+            <div class="campos">
+                <label for="tipo" class="required-field">Tipo</label>
+                <select name="tipo" id="tipo" class="form-select">
+                    <option value="">Seleccione</option>
+                    <option value="preventivo">Preventivo</option>
+                    <option value="correctivo">Correctivo</option>
+                </select>
+            </div>
+            <div class="campos">
+                <label for="estado" class="required-field">Estado</label>
+                <select name="estado" id="estado" class="form-select">
+                    <option value="">Seleccionar</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="completado">En Proceso</option>
+                    <option value="finalizado">Finalizado</option>
+                </select>
+            </div>
+        </div>
+        <div class="formulariorepuestos" id="repuestos">
+            <div class="tabla-repuestos">
                 <table class="table table-bordered table-striped" id="tabla">
                     <thead>
                         <tr class="text-center">
@@ -150,43 +181,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td>
-                            <select name="repuesto[]" id="repuesto_1" class="form-select" onchange="calcula(this.id)">
-                                <option value="">Seleccione</option>
-                                <?php
-                                    $sql="select * from repuesto";
+                        <tr>
+                            <td>
+                                <select name="repuesto[]" id="repuesto_1" class="form-select" onchange="calcula(this.id)">
+                                    <option value="">Seleccione</option>
+                                    <?php
+                                    $sql="SELECT * FROM repuesto";
                                     $resultado = $conexion->query($sql);
                                     while ($fila = $resultado->fetch_assoc()){
-                                        $id=$fila['id_repuesto'];
-                                        $nombre=$fila["nombre"];
-                                        $precio=$fila["costo"];
-                                        echo "<option value='$id' data-precio='$precio'>".$nombre."</option>";
+                                        echo "<option value='{$fila['id_repuesto']}' data-precio='{$fila['costo']}'>{$fila['nombre']}</option>";
                                     }
-                                ?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" id="precio_1" name="precio[]" class="form-control text-end" readonly>
-                        </td>
-                        <td>
-                            <input type="number" id="cantidad_1" name="cantidad[]" min="0" class="form-control text-end" oninput="total(this.id)">
-                        </td>
-                        <td>
-                            <input type="text" id="total_1" name="total[]" class="form-control text-end" readonly>
-                        </td>
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" id="precio_1" name="precio[]" class="form-control text-end" readonly>
+                            </td>
+                            <td>
+                                <input type="number" id="cantidad_1" name="cantidad[]" min="0" class="form-control text-end" oninput="total(this.id)">
+                            </td>
+                            <td>
+                                <input type="text" id="total_1" name="total[]" class="form-control text-end" readonly>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+                <div class="botones-repuestos">
+                    <button type="button" class="boton-agregar" id="agregar">Agregar Repuesto</button>
+                </div>
             </div>
-            <div class="descripcion">
-                <label for="descripcion" class="required-field">Descripción del Mantenimiento</label>
-                <textarea name="descripcion" name="descripcion" id="descripcion" class="form-control"></textarea>
-            </div>
-            <div class="botones">
-                <button type="button" class="boton-cancelar" id="btnCancelar">Cancelar</button>
-                <button type="submit" class="boton-guardar" id="btnGuardar">Guardar</button>
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="descripcion">
+            <label for="descripcion" class="required-field">Descripción del Mantenimiento</label>
+            <textarea name="descripcion" id="descripcion" class="form-control"></textarea>
+        </div>
+        <div class="botones">
+            <button type="button" class="boton-cancelar" id="btnCancelar">Cancelar</button>
+            <button type="submit" class="boton-guardar" id="btnGuardar">Guardar</button>
+        </div>
+    </form>
+</div>
 </main>
 <script src="mantenimiento.js"></script>
 <?php require("includes/pie.php"); ?>

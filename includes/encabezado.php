@@ -64,15 +64,14 @@
 
     <details class="menu-group">
       <summary>
-            <i class='bx bx-desktop'></i>
+            <i class="fas fa-wrench"></i>
             <span>Mantenimiento</span>
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
         <div class="submenu">
             <a href="mantenimiento.php">Registrar Mantenimiento</a>
-            <a href=""> Técnicos</a>
-            <a href="repuestos.php"> Repuestos</a>
-            <a href="listadoMantenimiento.php"> Listado</a>
+            <a href="repuestos.php"> Agregar Repuestos</a>
+            <a href="listadoMantenimiento.php"> Historial Mantenmientos</a>
         </div>
     </details>
 
