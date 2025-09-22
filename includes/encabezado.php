@@ -82,11 +82,6 @@
             <span>Informes</span>
             <i class='bx bx-chevron-right arrow'></i>
       </summary>
-        <div class="submenu">
-            <a href="informesUsuario.php"> Usuario</a>
-            <a href="informeEstado.php"> Estado</a>
-            <a href=""> Fecha Adquisición</a>
-        </div>
     </details>
 
     <a href="index.php" class="menu-item">
