@@ -1,0 +1,253 @@
+/* === Estilos generales === */
+.main {
+  margin-left: 215px; /* tamaño del sidebar */
+  margin-top: 60px;   /* empuja hacia abajo para no quedar debajo de la topbar */
+  padding: 10px;
+  box-sizing: border-box;
+  width: calc(100% - 220px); /* ajusta al ancho restante */
+}
+
+.main-header h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 25px;
+  color: #012e42;
+}
+
+/* === Formularios === */
+.form-contenedor {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  max-width: 98%;
+  margin: 0 auto;
+}
+
+/* Cabecera del formulario */
+.titulo-seccion {
+  margin-top: 10px;
+  margin-bottom: 25px;
+  padding: 12px 20px;
+  background-color: #f0f8ff; /* azul claro suave */
+  border-left: 3px solid #00aaff;
+  font-size: 20px;
+  color: #012e42;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+/* Labels */
+label {
+  font-weight: 500;
+  color: #012e42;
+  margin-bottom: 5px;
+  font-size: 13px;
+  display: block;
+}
+
+/* Inputs */
+input.form-control {
+  min-width: 150px;
+  border: 1px solid #e6dcdc;
+  border-radius: 6px;
+  padding: 8px 10px;
+  transition: all 0.2s ease; 
+  font-size: 0.9rem;
+  box-sizing: border-box; 
+  height: 35px;
+  margin-bottom: 0;
+}
+
+input.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52,152,219,0.3);
+}
+
+/* Espaciado adicional entre inputs y botones */
+.form-spacing .form-control,
+.form-spacing .btn {
+  margin-bottom: 12px;
+}
+
+/* === Botones === */
+.btn {
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 300;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-primary {
+  text-align: center;
+  background-color: #012e42;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1a5379;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* === Contenedor responsivo === */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+/* === Tabla general === */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #333;
+}
+
+/* === Encabezado === */
+.table thead {
+  background: #1a73e8; /* azul elegante */
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table th {
+  padding: 12px 15px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 2px solid #1565c0;
+}
+
+/* === Celdas === */
+.table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+  text-align: left;
+}
+
+/* === Filas === */
+.table tr:nth-child(even) {
+  background: #f8f9fa; /* gris claro */
+}
+
+.table tr:hover {
+  background: #ecf5ff; /* azul suave hover */
+  transition: background 0.2s ease-in-out;
+}
+
+/* === Responsive (móviles) === */
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table, .table tbody, .table tr, .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 10px;
+  }
+
+  .table td {
+    text-align: right;
+    padding: 10px;
+    position: relative;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #555;
+  }
+}
+
+/* === Acciones (íconos editar/eliminar) === */
+.btn-accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  margin: 0 3px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Eliminar - Rojo */
+.btn-eliminar {
+  color: #012e42;
+  background: #fdeaea;
+}
+.btn-eliminar:hover {
+  background: #e53935;
+  color: #fff;
+}
+
+/* Editar - Azul */
+.btn-editar {
+  color: #012e42;
+  background: #eaf2fd;
+}
+.btn-editar:hover {
+  background: #f8ac16;
+  color: #fff;
+}
+
+/* === Mensajes flotantes === */
+.alerta-flotante {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2ecc71;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.alerta-flotante.error {
+  background: #e74c3c;
+}
+
+.cerrar-alerta {
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

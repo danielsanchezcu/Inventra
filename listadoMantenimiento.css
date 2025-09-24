@@ -1,0 +1,217 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+ body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    display: flex;
+    height: 100vh;
+    background: #f5f7fa;
+  } 
+
+.main {
+  margin-left: 215px; /* tamaño de  sidebar */
+  margin-top: 60px;    /* empuja hacia abajo para no quedar debajo de la topbar */
+  padding: 10px;
+  box-sizing: border-box;
+  width: calc(100% - 220px); /* ajusta al ancho restante */
+}
+
+
+/* Contenedor de filtros */
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin: 20px 0;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Inputs de búsqueda */
+.filtros input[type="text"],
+.filtros select {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    outline: none;
+    transition: 0.3s;
+    width: 200px;
+    height: 40px;
+}
+
+.filtros input[type="text"]:focus,
+.filtros select:focus {
+    border-color: #3b82f6; /* Azul */
+    box-shadow: 0 0 6px rgba(59,130,246,0.3);
+}
+
+/* Botón Filtrar */
+.filtros button {
+    padding: 0 18px;
+    background: #012e42; /* Azul Inventra */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 80px;
+    height: 35px;
+}
+
+.filtros button:hover {
+    background: #133e9d; /* Azul más oscuro */
+}
+
+/* Botón Reset */
+.filtros .btn-reset {
+    padding: 8px 22px;
+    background: #ef4444; /* Rojo */
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    transition: background 0.3s ease;
+    width: 80px;
+    height: 35px;
+}
+
+.filtros .btn-reset:hover {
+    background: #dc2626; /* Rojo más oscuro */
+}
+
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+
+/* ===== TITULO ===== */
+.main-header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 25px;
+  color: #012e42;
+  
+}
+
+/* Contenedor principal */
+.form-contenedor {
+    margin: 0px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Scroll si hay muchas columnas */
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #333;
+}
+
+/* Encabezados */
+thead th {
+    background: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #2563eb; /* Azul elegante */
+}
+
+/* Filas */
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* Última fila sin borde */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover fila */
+tbody tr:hover {
+    background: #f9fafb;
+    transition: background 0.2s ease-in-out;
+}
+
+/* ===== ESTADOS ===== */
+.Finalizado {
+    color: #27ae60;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Pendiente {
+    color: #c0392b;
+    font-weight: bold;
+    text-align: center;
+}
+
+.En\ Proceso {
+    color: #f39c12;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* ===== RESPONSIVIDAD ===== */
+@media screen and (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        padding: 100px 15px 30px 15px;
+    }
+
+    table {
+        font-size: 12px;
+        min-width: unset;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    thead {
+        display: none;
+    }
+
+    table, tbody, tr, td {
+        display: block;
+        width: 100%;
+    }
+
+    tbody tr {
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    tbody td {
+        padding: 8px 10px;
+        text-align: right;
+        position: relative;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    tbody td:last-child {
+        border-bottom: none;
+    }
+}
