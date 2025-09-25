@@ -159,7 +159,7 @@ tbody tr:hover {
     text-align: center;
 }
 
-.En\ Proceso {
+.En-Proceso {
     color: #f39c12;
     font-weight: bold;
     text-align: center;
@@ -215,3 +215,135 @@ tbody tr:hover {
         border-bottom: none;
     }
 }
+
+.btn-eliminar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #012e42; /* Rojo */
+    font-size: 16px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-eliminar:hover {
+    color: #db1125; /* Rojo más oscuro */
+    transform: scale(1.2);
+}
+
+.btn-detalles { 
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #012e42;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 10px;
+}
+
+.btn-detalles:hover {
+color: #2563eb;
+  transform: scale(1.1);
+}
+
+.btn-detalles i {
+  font-size: 14px;
+}
+
+
+
+/* Estilos del modal */
+/* ===== Modal General ===== */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ===== Contenedor del Modal ===== */
+.modal-contenido {
+  background: #ffffff;
+  margin: 5% auto;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 70%;
+  max-width: 900px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: slideDown 0.4s ease;
+  color: #333;
+}
+
+/* ===== Títulos ===== */
+.modal-contenido h2 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #012e42;
+  border-bottom: 2px solid #1a73e8;
+  padding-bottom: 8px;
+}
+
+.modal-contenido h3 {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #012e42;
+  border-left: 4px solid #1a73e8;
+  padding-left: 8px;
+}
+
+
+
+/* ===== Botón Cerrar ===== */
+.cerrar {
+  color: #012e42;
+  float: right;
+  font-size: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.cerrar:hover {
+  color: #e53935;
+}
+
+/* ===== Contenido Detalles ===== */
+#detallesContenido {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columnas */
+  gap: 12px 30px;
+  margin-top: 10px;
+}
+
+#detallesContenido p {
+  background: #f8f9fa;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  border: 1px solid #e0e0e0;
+}
+
+#detallesContenido strong {
+  color: #012e42;
+  font-weight: 600;
+}
+
+/* ===== Animaciones ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+

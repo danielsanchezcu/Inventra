@@ -1,3 +1,6 @@
+<?php
+require("includes/encabezado.php");
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -12,72 +15,6 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 </head>
-
-
-<body>
-<body>
-    <div class="barrasuperior">
-  <div class="busqueda">
-    <i class='bx bx-search icono-busqueda'></i>
-    <input type="text" placeholder="Buscar..." />
-  </div>
-
-  <div class="acciones">
-    <i class='bx bx-bell'></i>
-    <i class='bx bx-user'></i>
-  </div>
-</div>
-
-<!-- Barra lateral -->
-    <aside class="lateral">
-        <div class="logo">
-          <img src="imagenes/Logo inventra.png" alt="Logo">
-        </div>
-       
-
-    <nav class="menu">
-
-    <a href="index.php" class="menu-item">
-            <i class='bx bxs-home'></i>
-            <span>Inicio</span>
-        </a>
-
-        <a href="panelcontrol.php" class="menu-item">
-            <i class='bx bx-bar-chart-alt-2'></i>
-            <span>Dashboard</span>
-        </a>
-
-<!-- Menú desplegable INVENTARIO -->
-    <details class="menu-group">
-      <summary>
-            <i class='bx bx-desktop'></i>
-            <span>Dispositivos</span>
-            <i class='bx bx-chevron-right arrow'></i>
-      </summary>
-        <div class="submenu">
-            <a href="registro.php"> Registrar Equipo</a>
-            <a href="asignar.php"> Asignar Equipo</a>
-            <a href="consultar.php"> Consultar Inventario</a>
-        </div>
-    </details>
-
-    <a href="mantenimiento.php" class="menu-item">
-      <i class='bx bxs-cog'></i>
-      <span>Mantenimiento</span>
-    </a>
-
-    <a href="informes.php" class="menu-item">
-      <i class='bx bxs-food-menu'></i>
-      <span>Informes</span>
-    </a>
-
-    <a href="inicio.html" class="menu-item">
-      <i class='bx bxs-exit'></i>
-      <span>Salir</span>
-    </a>
-  </nav>
-  </aside>
-
 <main class="main">
 <div class="main-header">
   <h2>Asignación de equipo</h2>

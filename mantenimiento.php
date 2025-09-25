@@ -164,7 +164,7 @@ if ($_POST) {
                 <select name="estado" id="estado" class="form-select">
                     <option value="">Seleccionar</option>
                     <option value="pendiente">Pendiente</option>
-                    <option value="completado">En Proceso</option>
+                    <option value="En Proceso">En Proceso</option>
                     <option value="finalizado">Finalizado</option>
                 </select>
             </div>
