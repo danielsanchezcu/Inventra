@@ -47,7 +47,7 @@
 
       <!-- Pie -->
         <h3>© 2025 | INVENTRA</h3>
-        <h3>Desarrollado por Daniel Felipe Sánchez Currea y José Arnulfo Reyes</h3>
+        <h3>Desarrollado por Daniel Felipe Sánchez Currea</h3>
     </div>
   </div>
 </body>

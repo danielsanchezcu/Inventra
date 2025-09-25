@@ -194,7 +194,7 @@
 
 /* Contenido modulo */
 .contenido-dashboard {
-  margin-top: 60px; /*  espacio a la barra superior fija */
+  margin-top: 50px; /*  espacio a la barra superior fija */
   margin-left: 210px; /* ancho de la barra lateral */
   padding: 20px;
 }
@@ -203,7 +203,7 @@
   text-align: center;
   font-size: 22px;
   color: #012e42;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .contenido-dashboard h3 {

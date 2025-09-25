@@ -21,11 +21,11 @@ $tipo     = isset($_GET['tipo']) ? $conexion->real_escape_string($_GET['tipo']) 
 
 // Consulta base
 $sql = "SELECT h.id_mantenimiento, e.placa_inventario, e.serial, e.marca, e.modelo, e.tipo_equipo,
-               m.tipo AS tipo_mantenimiento, m.tecnico_nombre, m.fecha_mantenimiento,
-               h.descripcion AS descripcion_historial, h.repuestos_usados, h.estado AS estado_historial,
-               a.nombres, a.apellidos, a.identificacion, a.correo_electronico, a.cargo, 
-               a.tipo_contrato, a.area, a.sede, a.extension_telefono, 
-               a.accesorios_adicionales, a.fecha_asignacion, a.fecha_devolucion, a.observaciones
+            m.tipo AS tipo_mantenimiento, m.tecnico_nombre, m.fecha_mantenimiento,
+            h.descripcion AS descripcion_historial, h.repuestos_usados, h.estado AS estado_historial,
+            a.nombres, a.apellidos, a.identificacion, a.correo_electronico, a.cargo, 
+            a.tipo_contrato, a.area, a.sede, a.extension_telefono, 
+            a.accesorios_adicionales, a.fecha_asignacion, a.fecha_devolucion, a.observaciones
         FROM historial_mantenimientos h
         INNER JOIN registro_equipos e ON h.id_equipo = e.id
         INNER JOIN mantenimiento m ON h.id_mantenimiento = m.id_mantenimiento

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="encabezado.css">
     <link rel="stylesheet" href="index1.css">
     <link rel="stylesheet" href="styledashb.css">
-    <link rel="stylesheet" href="modalcerrar.css"> <!-- Aquí pones el css externo del modal -->
+    <link rel="stylesheet" href="modalcerrar.css"> 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
 </head>
 <body>
