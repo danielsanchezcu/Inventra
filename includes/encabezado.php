@@ -71,6 +71,7 @@
                 <div class="submenu">
                     <a href="mantenimiento.php">Registrar Mantenimiento</a>
                     <a href="repuestos.php"> Agregar Repuestos</a>
+                    <a href="registrar_tecnico.php"> Registrar Técnicos</a>
                     <a href="listadoMantenimiento.php"> Historial Mantenmientos</a>
                 </div>
             </details>

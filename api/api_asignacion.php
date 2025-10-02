@@ -80,9 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_update->execute();
     $stmt_update->close();
 
-  echo json_encode([
-  'success' => true,
-  'message' => "Equipo $placa asignado correctamente al.\nUsuario $nombres $apellidos"
+echo json_encode([
+'success' => true,
+'message' => "Equipo $placa asignado correctamente al.\nUsuario $nombres $apellidos"
 ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error al registrar: ' . $stmt_insert->error]);

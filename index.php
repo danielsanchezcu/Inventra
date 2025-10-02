@@ -41,7 +41,7 @@
         <div id="mensaje" class="mensaje-oculto"></div>
         <button type="submit" class="boton-ingresar">Ingresar</button>
         
-         <!-- Script externo de login (API) -->
+        <!-- Script externo de login (API) -->
         <script src="login.js"></script>
       </form>
 

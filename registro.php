@@ -48,7 +48,7 @@ require("includes/encabezado.php");
                                 <i class='bx bx-info-circle'></i>
                                 <span class="tooltiptext">Debe contener hasta 10 caracteres alfanuméricos</span>
                             </span>
-                         </label>
+                        </label>
                             <input type="text" id="serial" name="serial" placeholder="Serial" required>
                     </div>
 
@@ -57,7 +57,7 @@ require("includes/encabezado.php");
                         <label for="placa_inventario" class="required-field">Placa de Inventario</label>
                         <input type="text" id="placa_inventario" name="placa_inventario" placeholder="Ej: INV - 001" required>
                     </div>
-                   
+                
                     <div class="form-group">
                             <label for="ubicacion_fisica" class="required-field">Ubicación Física</label>
                             <input type="text" id="ubicacion_fisica" name="ubicacion_fisica" placeholder="Ubicación Física" required>
@@ -78,10 +78,9 @@ require("includes/encabezado.php");
                             <input type="text" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
                     </div>  
 
-                   
 
                     <div class="form-group">
-                         <label for="tipo" class="required-field">Tipo de Equipo</label>
+                        <label for="tipo" class="required-field">Tipo de Equipo</label>
                         <select id="tipo" name="tipo" required>
                             <option value="" disabled selected>Seleccione una opción</option>
                             <option value="Desktop">Desktop</option>
@@ -105,9 +104,9 @@ require("includes/encabezado.php");
                         </div>
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <label for="estado" class="required-field">Estado</label>
-                         <select id="estado" name="estado" required>
+                        <select id="estado" name="estado" required>
                             <option value="" disabled selected>Seleccione una opción</option>
                             <option value="Disponible">Disponible</option>
                             <option value="En mantenimiento">En mantenimiento</option>
@@ -136,8 +135,6 @@ require("includes/encabezado.php");
                             <label for="sistema_operativo" class="required-field">Sistema Operativo</label>
                             <input type="text" id="sistema_operativo" name="sistema_operativo" placeholder="Sistema Operativo" required>
                         </div>
-
-              
                         
                         <div class="form-group">
                             <label for="ram" class="required-field">Memoria RAM</label>
@@ -168,7 +165,7 @@ require("includes/encabezado.php");
                             <input type="date" id="fecha_adquisicion" name="fecha_adquisicion" required>
                         </div>
 
-                       <div class="form-group">
+                    <div class="form-group">
                             <label for="imagen_equipo" class="required-field">Imagen del Equipo</label>
                             <input type="file" id="imagen_equipo" name="imagen_equipo" accept="image/*" required>
                         </div>
@@ -194,5 +191,5 @@ require("includes/encabezado.php");
             </form>
         </div>
     </div>
- </main>
+</main>
 <script src="formulario.js"></script>

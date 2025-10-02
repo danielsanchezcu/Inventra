@@ -4,8 +4,8 @@ include("includes/conexion.php");
 
 // Consulta rápida de resumen
 $usuarios = $conexion->query("SELECT COUNT(*) AS total FROM usuario")->fetch_assoc()['total'];
-$equipos = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'disponible'")->fetch_assoc()['total'];
-$mantenimiento = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'mantenimiento'")->fetch_assoc()['total'];
+$equipos = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'Disponible'")->fetch_assoc()['total'];
+$mantenimiento = $conexion->query("SELECT COUNT(*) AS total FROM registro_equipos WHERE estado = 'En mantenimiento'")->fetch_assoc()['total'];
 $asignaciones = $conexion->query("SELECT COUNT(*) AS total FROM asignacion_equipo WHERE fecha_asignacion >= DATE_SUB(NOW(), INTERVAL 30 DAY)")->fetch_assoc()['total'];
 
 $datosArea = $conexion->query("SELECT area, COUNT(*) as total FROM asignacion_equipo GROUP BY area");

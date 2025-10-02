@@ -40,7 +40,7 @@ $usuario = $result->fetch_assoc();
 // Verificar contraseña
 
 if (!password_verify($contrasena, $usuario['contrasena'])) {
-    echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
+    echo json_encode(["success" => false, "message" => "Usuario o contraseña incorrectos"]);
     exit;
 }
 
