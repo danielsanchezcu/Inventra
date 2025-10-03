@@ -149,7 +149,9 @@
                     </div>
                     <div class="campos">
                         <label for="tecnico" class="required-field">Técnico Encargado</label>
-                        <input type="text" class="form-control" id="tecnico" name="tecnico_nombre" required>
+                        <select class="form-control" id="tecnico" name="tecnico_nombre" required>
+                            <option value="">Seleccione un técnico</option>
+                        </select>
                     </div>
                     <div class="campos">
                         <label for="tipo" class="required-field">Tipo</label>

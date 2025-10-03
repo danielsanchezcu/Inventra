@@ -59,6 +59,7 @@ require("includes/encabezado.php");
         <div class="form-group">
             <label>Estado</label>
             <select id="estado">
+            <option value="">Seleccionar</option>
             <option value="ACTIVO">Activo</option>
             <option value="INACTIVO">Inactivo</option>
             <option value="SUSPENDIDO">Suspendido</option>

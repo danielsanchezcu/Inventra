@@ -68,3 +68,20 @@ function total(id){
 function edita (id) {
 	document.getElementById("id").value=id
 }
+
+
+// Cargar lista de técnicos desde la API y llenar el select
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("api/api_tecnicos.php?action=read")
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("tecnico");
+            data.forEach(tecnico => {
+                let option = document.createElement("option");
+                option.value = tecnico.id_tecnico;   // el id real de la BD
+                option.textContent = `${tecnico.nombres} ${tecnico.apellidos}`;  // nombre completo
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error cargando técnicos:", error));
+});
