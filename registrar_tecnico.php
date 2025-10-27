@@ -5,10 +5,8 @@ require("includes/encabezado.php");
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Módulo Técnicos - Inventra</title>
+  <title>Registrar Técnicos - Inventra</title>
   <link rel="stylesheet" href="registrar_tecnico.css">
-    
-
 </head>
 <body>
 <main class="main">

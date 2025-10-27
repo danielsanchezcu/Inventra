@@ -1,0 +1,299 @@
+/* === BASE GENERAL === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  background: linear-gradient(135deg, #eef3f8, #f9fbfd);
+  display: block; /* permite que el contenido crezca */
+  min-height: 100vh; /* asegura altura mínima, pero puede expandirse */
+}
+
+
+/* === CONTENEDOR PRINCIPAL === */
+.reportes-container {
+  margin-left: 225px;
+  margin-top: 70px;
+  padding: 40px;
+  width: calc(98% - 220px);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: auto; /* <-- se ajusta al contenido */
+  min-height: calc(100vh - 100px); /* <-- asegura que al menos cubra toda la pantalla visible */
+  box-sizing: border-box;
+}
+
+
+.reportes-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* === TITULO Y DESCRIPCION === */
+.titulo-reportes {
+  margin-top: 5px;
+  margin-bottom: 25px;
+  padding: 12px 20px;
+  background-color: #f0f8ff; /* azul claro suave */
+  border-left: 3px solid #00aaff;
+  font-size: 20px;
+  color: #012e42;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+
+.descripcion-reportes {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  max-width: 850px;
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+/* === LISTA DE REPORTES === */
+.reportes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* === ITEM DE REPORTE === */
+.reporte-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: #f9fbfd;
+  border: 1px solid #e3e8ee;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.reporte-item:hover {
+  background: #f0faff;
+  border-color: #b8e3f7;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 170, 255, 0.15);
+}
+
+/* === COLUMNA IZQUIERDA === */
+.reporte-info {
+  width: 50%;
+}
+
+.reporte-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #012e42;
+  margin-bottom: 6px;
+}
+
+.reporte-descripcion {
+  font-size: 0.85rem;
+  color: #6b6b6b;
+}
+
+/* === COLUMNA DERECHA === */
+.reporte-opciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 50%;
+}
+
+/* === SELECT === */
+.reporte-select {
+  padding: 9px 12px;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 0.8rem;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reporte-select:hover {
+  border-color: #00aaff;
+  box-shadow: 0 0 6px rgba(0, 170, 255, 0.2);
+}
+
+/* === INPUT DE FECHA === */
+.input-fecha {
+  padding: 10px 14px;
+  border: 1.6px solid #cfd8dc;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  font-size: 0.8rem;
+  color: #012e42;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  width: 160px;
+  height: 35px;
+}
+
+/* Hover */
+.input-fecha:hover {
+  border-color: #012e42;
+  background-color: #ffffff;
+}
+
+/* Focus */
+.input-fecha:focus {
+  border-color: #008ecc;
+  box-shadow: 0 0 6px rgba(0, 174, 255, 0.35);
+  background-color: #fff;
+}
+
+/* Ícono del calendario personalizado */
+.input-fecha::-webkit-calendar-picker-indicator {
+  background: url('https://cdn-icons-png.flaticon.com/512/747/747310.png') no-repeat center;
+  background-size: 15px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  color: #012e42;
+}
+
+/* Hover del ícono */
+.input-fecha::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Ajuste visual del texto dentro */
+.input-fecha::-webkit-datetime-edit {
+  color: #012e42;
+  letter-spacing: 0.10px;
+}
+
+/* Espaciado entre los dos inputs */
+.reporte-opciones .input-fecha + .input-fecha {
+  margin-left: 10px;
+}
+
+
+
+/* === BOTONES === */
+.reporte-botones {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.reporte-botones button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  width: 40px;
+}
+
+.reporte-botones button:hover {
+  transform: scale(1.15);
+  opacity: 0.85;
+}
+
+.reporte-botones img {
+  width: 23px;
+  height: 28px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .reporte-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .reporte-info,
+  .reporte-opciones {
+    width: 100%;
+  }
+
+  .reporte-opciones {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+
+
+.input-busqueda {
+  padding: 9px 12px;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 0.8rem;
+  color: #333;
+  width: 180px;
+  transition: all 0.2s ease;
+}
+
+.input-busqueda:focus {
+  border-color: #00aaff;
+  box-shadow: 0 0 6px rgba(0, 170, 255, 0.2);
+  outline: none;
+}
+
+
+
+/* === RESULTADOS DE INFORMES === */
+.resultados-container {
+  margin-top: 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 25px;
+}
+
+.titulo-resultados {
+  font-size: 18px;
+  color: #012e42;
+  margin-bottom: 20px;
+  border-left: 4px solid #00aaff;
+  padding-left: 10px;
+}
+
+.tabla-informes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tabla-informes th {
+  background-color: #00aaff;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla-informes td {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  color: #333;
+}
+
+.tabla-informes tr:hover {
+  background-color: #f0faff;
+}
+
+.texto-placeholder, .texto-error {
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px;
+}
