@@ -26,7 +26,7 @@ require("includes/encabezado.php");
       <i class="bx bx-user"></i> Información del usuario
     </h3>
     
-    <form action="asignar_equipo.php" method="POST" id="asignacionForm">
+    <form action="asignar_equipo.php" method="POST" id="asignacionForm" novalidate>
       <div class="form-usuario">
         
         <div class="form-group">
@@ -57,7 +57,7 @@ require("includes/encabezado.php");
           <input type="text" id="cargo" name="cargo" placeholder="Ej: Analista de RH" required>
         </div>
 
-       <div class="form-group">
+      <div class="form-group">
             <label for="contrato" class="required-field">Tipo de Contrato</label>
             <select id="contrato" name="contrato" required>
               <option value="" disabled selected>Seleccione una opción</option>
@@ -78,8 +78,6 @@ require("includes/encabezado.php");
           <input type="text" id="extension" name="extension" placeholder="Extensión / Teléfono">
         </div>
       </div>
-
-       
   
       <div class="form_equipo">
         <h3 class="titulo-seccion">
@@ -149,7 +147,7 @@ require("includes/encabezado.php");
       </div>
 
       <div id="mensaje" class="alerta" style="display: none;"></div>
-      <div id="mensajeRespuesta" class="mensaje-respuesta"></div>
+
       <div class="buttons">
         <button type="reset">
           <i class="bx bx-x"></i> Cancelar
@@ -163,7 +161,7 @@ require("includes/encabezado.php");
     </div>
 </main>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="asignacion.js"></script>
 <script src="asignar.js"></script>
 

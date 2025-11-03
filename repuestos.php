@@ -13,16 +13,41 @@ $num = $row["num"] + 1;
 $accion = $_GET['accion'] ?? '';
 $id = $_GET['id'] ?? null;
 
-//  Eliminar repuesto
+// Variables para mensaje
+$mensaje = '';
+$tipo = '';
+
+// Eliminar repuesto
 if ($accion === 'eliminar' && $id) {
     $id = intval($id);
+
+    // Obtener el nombre ANTES de eliminar
+    $sql_nombre = "SELECT nombre FROM repuesto WHERE id_repuesto='$id' LIMIT 1";
+    $res_nombre = $conexion->query($sql_nombre);
+    $nombre_repuesto = ($res_nombre && $res_nombre->num_rows > 0)
+        ? $res_nombre->fetch_assoc()['nombre']
+        : 'Repuesto desconocido';
+
+    // Eliminar repuesto
     $sql = "DELETE FROM repuesto WHERE id_repuesto='$id'";
     if ($conexion->query($sql)) {
-        echo "<script>mostrarMensaje('Repuesto eliminado correctamente');</script>";
+        $mensaje = "Repuesto eliminado correctamente";
+        $tipo = "success";
+
+        // Crear notificación de eliminación
+        $fecha_actual = date('Y-m-d H:i:s');
+        $mensaje_notificacion = "El repuesto <b>$nombre_repuesto</b> fue eliminado del inventario.";
+        $modulo = "Eliminación de Repuesto";
+
+        $sql_notificacion = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                            VALUES ('$mensaje_notificacion', '$modulo', '$fecha_actual', 0)";
+        $conexion->query($sql_notificacion);
     } else {
-        echo "<script>mostrarMensaje('Error al eliminar: " . $conexion->error . "');</script>";
+        $mensaje = "Error al eliminar: " . $conexion->error;
+        $tipo = "error";
     }
 }
+
 
 //  Guardar o editar repuesto
 if ($_POST) {
@@ -39,17 +64,36 @@ if ($_POST) {
         $sql1 = "UPDATE repuesto 
                 SET nombre='$nombre', descripcion='$descripcion', costo='$precio', cantidad='$cantidad'
                 WHERE id_repuesto='$id'";
-        $msj = "Datos actualizados correctamente";
+        $mensaje = "Datos actualizados correctamente";
     } else {
         $sql1 = "INSERT INTO repuesto (id_repuesto, nombre, descripcion, costo, cantidad) 
                 VALUES ('$num', '$nombre', '$descripcion', '$precio', '$cantidad')";
-        $msj = "Nuevo repuesto registrado exitosamente";
+        $mensaje = "Nuevo repuesto registrado exitosamente";
     }
 
     if ($conexion->query($sql1)) {
-        echo "<script>mostrarMensaje('$msj');</script>";
+        $tipo = "success";
+
+  // === Notificación automática ===
+    $fecha_actual = date('Y-m-d H:i:s');
+
+    if ($resultado->num_rows > 0) {
+        // Si fue una actualización
+        $mensaje_notificacion = "El repuesto <b>$nombre</b> fue actualizado correctamente.";
+        $modulo = "Actualización de Repuesto";
     } else {
-        echo "<script>mostrarMensaje('Error: " . $conexion->error . "');</script>";
+        // Si fue un registro nuevo
+        $mensaje_notificacion = "Se ha registrado un nuevo repuesto: <b>$nombre</b>.";
+        $modulo = "Nuevo Repuesto";
+    }
+
+    $sql_notificacion = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                        VALUES ('$mensaje_notificacion', '$modulo', '$fecha_actual', 0)";
+    $conexion->query($sql_notificacion);
+
+    } else {
+        $mensaje = "Error: " . $conexion->error;
+        $tipo = "error";
     }
 
     // actualizar consecutivo
@@ -67,17 +111,11 @@ if ($_POST) {
     <div class="form-contenedor">
         <div class="formulario">
             <h3 class="titulo-seccion">
-                <i class="fas fa-cog"></i> Agregar Repuesto
+                <i class='bx bxs-cog'></i>Agregar Repuesto
             </h3>
 
-            <!-- Mensajes flotantes -->
-            <div id="mensaje" class="alerta-flotante" style="display: none;">
-                <span class="cerrar-alerta" onclick="this.parentElement.style.display='none'">✖</span>
-                <span id="mensaje-texto"></span>
-            </div>
-            
             <!-- Formulario -->
-<form action="" method="post" id="frmRepuestos">
+<form action="" method="post" id="frmRepuestos" novalidate>
     <div class="row g-3">
         <!-- Columna ID + Botón -->
         <div class="col-md-2 d-flex flex-column align-items-start">
@@ -114,9 +152,8 @@ if ($_POST) {
     </div>
 </form>
 
-
             <!-- Listado -->
-            <h3 class="titulo-seccion mt-3"><i class="fas fa-tools"></i> Listado de Repuestos</h3>
+            <h3 class="titulo-seccion mt-3"><i class='bx bx-wrench'></i> Listado de Repuestos</h3>
             <table class="table table-bordered table-striped">
                 <thead class="text-center">
                     <tr>
@@ -140,10 +177,9 @@ if ($_POST) {
                             $cantidad = $fila["cantidad"];
                             $a = '<a href="repuestos.php?accion=eliminar&id='.$id.'" 
         class="btn-accion btn-eliminar" 
-        title="Eliminar" 
-        onclick="return confirm(\'¿Estás seguro de que deseas eliminar este repuesto?\')">
-        <i class="fas fa-trash"></i>
-    </a>';
+        title="Eliminar">
+        <i class="bx bx-trash"></i>
+    </a>'; 
 
                             $b = '<a href="#" class="btn-accion btn-editar" title="Editar" onclick="editar(this)" 
         data-id="' . htmlspecialchars($id) . '" 
@@ -151,7 +187,7 @@ if ($_POST) {
         data-descripcion="' . htmlspecialchars($descripcion) . '" 
         data-precio="' . htmlspecialchars($precio) . '" 
         data-cantidad="' . htmlspecialchars($cantidad) . '">
-        <i class="fas fa-pen"></i>
+        <i class="bx bx-edit-alt"></i>
     </a>';
 
                             $precio_formateado = "$ " . number_format($fila["costo"], 0, ',', '.'); 
@@ -171,5 +207,13 @@ if ($_POST) {
     </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="repuesto.js"></script>
 <?php require("includes/pie.php"); ?>
+
+<script>
+  // Pasar variables PHP al JS si existen mensajes
+  const mensajePHP = <?= json_encode($mensaje) ?>;
+  const tipoPHP = <?= json_encode($tipo) ?>;
+</script>
+

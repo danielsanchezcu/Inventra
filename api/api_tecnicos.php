@@ -10,7 +10,7 @@ require_once("../includes/conexion.php");
 $method = $_SERVER['REQUEST_METHOD'];
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
-// ✅ CREAR técnico
+// === CREAR técnico ===
 if ($method === 'POST' && $action === 'create') {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -34,14 +34,23 @@ if ($method === 'POST' && $action === 'create') {
     );
 
     if ($stmt->execute()) {
+        // 🔔 Crear notificación
+        $fecha = date('Y-m-d H:i:s');
+        $mensaje = "Se ha registrado un nuevo técnico: <b>" . $data['nombres'] . " " . $data['apellidos'] . "</b>.";
+        $modulo = "Registro de Técnico";
+
+        $conexion->query("INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                          VALUES ('$mensaje', '$modulo', '$fecha', 0)");
+
         echo json_encode(["success" => true, "message" => "Técnico registrado correctamente"]);
     } else {
         echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
     }
+
     $stmt->close();
 }
 
-// ✅ LISTAR técnicos
+// === LISTAR técnicos ===
 elseif ($method === 'GET' && $action === 'read') {
     $result = $conexion->query("SELECT * FROM tecnicos ORDER BY fecha_registro DESC");
     $tecnicos = [];
@@ -53,7 +62,7 @@ elseif ($method === 'GET' && $action === 'read') {
     echo json_encode($tecnicos);
 }
 
-// ✅ EDITAR técnico
+// === EDITAR técnico ===
 elseif ($method === 'PUT' && $action === 'update') {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -62,7 +71,8 @@ elseif ($method === 'PUT' && $action === 'update') {
         exit;
     }
 
-    $stmt = $conexion->prepare("UPDATE tecnicos SET nombres=?, apellidos=?, identificacion=?, telefono=?, correo=?, especialidad=?, estado=?, observaciones=? 
+    $stmt = $conexion->prepare("UPDATE tecnicos 
+                                SET nombres=?, apellidos=?, identificacion=?, telefono=?, correo=?, especialidad=?, estado=?, observaciones=? 
                                 WHERE id_tecnico=?");
     $stmt->bind_param(
         "ssssssssi",
@@ -78,14 +88,23 @@ elseif ($method === 'PUT' && $action === 'update') {
     );
 
     if ($stmt->execute()) {
+        // Crear notificación
+        $fecha = date('Y-m-d H:i:s');
+        $mensaje = "El técnico <b>" . $data['nombres'] . " " . $data['apellidos'] . "</b> ha sido actualizado.";
+        $modulo = "Actualización de Técnico";
+
+        $conexion->query("INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                        VALUES ('$mensaje', '$modulo', '$fecha', 0)");
+
         echo json_encode(["success" => true, "message" => "Técnico actualizado correctamente"]);
     } else {
         echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
     }
+
     $stmt->close();
 }
 
-// ✅ ELIMINAR técnico
+// === ELIMINAR técnico ===
 elseif ($method === 'DELETE' && $action === 'delete') {
     if (!isset($_GET['id'])) {
         echo json_encode(["success" => false, "message" => "ID no proporcionado"]);
@@ -93,18 +112,40 @@ elseif ($method === 'DELETE' && $action === 'delete') {
     }
 
     $id = intval($_GET['id']);
+
+    // Obtener nombre antes de eliminar
+    $nombre_tecnico = "Técnico desconocido";
+    $res = $conexion->prepare("SELECT nombres, apellidos FROM tecnicos WHERE id_tecnico = ?");
+    $res->bind_param("i", $id);
+    $res->execute();
+    $resultado = $res->get_result();
+    if ($resultado && $resultado->num_rows > 0) {
+        $fila = $resultado->fetch_assoc();
+        $nombre_tecnico = $fila['nombres'] . " " . $fila['apellidos'];
+    }
+    $res->close();
+
     $stmt = $conexion->prepare("DELETE FROM tecnicos WHERE id_tecnico=?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
+        // 🔔 Crear notificación
+        $fecha = date('Y-m-d H:i:s');
+        $mensaje = "El técnico <b>$nombre_tecnico</b> fue eliminado del sistema.";
+        $modulo = "Eliminación de Técnico";
+
+        $conexion->query("INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                        VALUES ('$mensaje', '$modulo', '$fecha', 0)");
+
         echo json_encode(["success" => true, "message" => "Técnico eliminado correctamente"]);
     } else {
         echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
     }
+
     $stmt->close();
 }
 
-// ✅ Si no coincide ninguna acción
+// === ACCIÓN NO VÁLIDA ===
 else {
     echo json_encode(["success" => false, "message" => "Acción no válida"]);
 }

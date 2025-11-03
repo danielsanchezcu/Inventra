@@ -4,40 +4,95 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const placa = document.getElementById('placa_inventario').value.trim();
-    const nombres = document.getElementById('nombres').value.trim();
-    const apellidos = document.getElementById('apellidos').value.trim();
-    const identificacion = document.getElementById('identificacion').value.trim();
+    const formData = new FormData(form);
 
-    if (!placa || !nombres || !apellidos || !identificacion) {
-      mostrarMensajeEnPantalla('⚠️ Por favor completa todos los campos obligatorios.', false);
+    // === CAMPOS REQUERIDOS ===
+    const requiredFields = [
+      'placa_inventario',
+      'nombres',
+      'apellidos',
+      'identificacion',
+      'correo',
+      'contrato',
+      'cargo',
+      'area',
+      'sede',
+      'extension',
+      'accesorios',
+      'fecha_asignacion'
+    ];
+
+    let missingFields = [];
+
+    // === LIMPIAR ESTILOS ANTERIORES ===
+    requiredFields.forEach(field => {
+      const input = document.getElementById(field);
+      if (input) input.style.border = '';
+    });
+
+    // === VALIDAR CAMPOS VACÍOS ===
+    requiredFields.forEach(field => {
+      const value = formData.get(field);
+      if (!value || value.trim() === '') {
+        missingFields.push(field);
+        const input = document.getElementById(field);
+        if (input) {
+          input.style.border = '0.5px solid #dc3545'; // rojo
+          input.style.borderRadius = '8px';
+          input.style.transition = '0.3s';
+        }
+      }
+    });
+
+    // === SI FALTAN CAMPOS, MOSTRAR ALERTA ===
+    if (missingFields.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        html: `Por favor completa todos los campos obligatorios antes de continuar.`,
+        background: '#fff',
+        color: '#012e42',
+        confirmButtonColor: '#ffc107',
+        confirmButtonText: 'Entendido',
+        timer: 5000,
+        timerProgressBar: true,
+        customClass: { popup: 'alerta-pequena' }
+      });
+
+      // Quitar el borde rojo después de 5 segundos
+      setTimeout(() => {
+        missingFields.forEach(field => {
+          const input = document.getElementById(field);
+          if (input) input.style.border = '';
+        });
+      }, 5000);
+
       return;
     }
 
-   const formData = {
-    placa_inventario: placa,
-    nombres,
-    apellidos,
-    identificacion,
-    correo_electronico: document.getElementById('correo').value,
-    tipo_contrato: document.getElementById('contrato').value,
-    cargo: document.getElementById('cargo').value,
-    area: document.getElementById('area').value,
-    sede: document.getElementById('sede').value,
-    extension_telefono: document.getElementById('extension').value,
-    accesorios_adicionales: document.getElementById('accesorios').value,
-    fecha_asignacion: document.getElementById('fecha_asignacion').value,
-    fecha_devolucion: document.getElementById('fecha_devolucion').value,
-    observaciones: document.getElementById('observaciones').value,
-};
+    // === SI TODO ESTÁ COMPLETO ===
+    const data = {
+      placa_inventario: formData.get('placa_inventario'),
+      nombres: formData.get('nombres'),
+      apellidos: formData.get('apellidos'),
+      identificacion: formData.get('identificacion'),
+      correo_electronico: formData.get('correo'),
+      tipo_contrato: formData.get('contrato'),
+      cargo: formData.get('cargo'),
+      area: formData.get('area'),
+      sede: formData.get('sede'),
+      extension_telefono: formData.get('extension'),
+      accesorios_adicionales: formData.get('accesorios'),
+      fecha_asignacion: formData.get('fecha_asignacion'),
+      fecha_devolucion: formData.get('fecha_devolucion'),
+      observaciones: formData.get('observaciones'),
+    };
 
     try {
       const response = await fetch('api/api_asignacion.php', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
 
       if (!response.ok) {
@@ -46,37 +101,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const result = await response.json();
 
-      if (result.status === 'success') {
-        mostrarMensajeEnPantalla('✅ ' + result.message, true);
+      // === ÉXITO ===
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Asignación completada',
+          html: `${result.message}`,
+          background: '#fefefeff',
+          color: '#012e42;',
+          confirmButtonColor: '#28a745',
+          confirmButtonText: 'Listo',
+          timer: 7000,
+          timerProgressBar: true,
+          customClass: { popup: 'alerta-pequena' }
+        });
         form.reset();
-        } else {
-        mostrarMensajeEnPantalla('❌ ' + result.message, false);
-        }       
+
+      // === ERROR EN VALIDACIÓN / DUPLICADO ===
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo asignar',
+          html: result.message,
+          background: '#ffffffff',
+          color: '#012e42;',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Cerrar',
+          timer: 8000,
+          timerProgressBar: true,
+          customClass: { popup: 'alerta-pequena' }
+        });
+      }
+
+    // === ERROR DE RED O SERVIDOR ===
     } catch (error) {
-      mostrarMensajeEnPantalla('⚠️ Error al enviar la asignación: ' + error.message, false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de conexión',
+        text: 'No se pudo enviar la asignación. ' + error.message,
+        background: '#ffffffff',
+        color: '#012e42;',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Cerrar',
+        timer: 8000,
+        timerProgressBar: true,
+        customClass: { popup: 'alerta-pequena' }
+      });
     }
   });
 });
-
-function mostrarMensajeEnPantalla(mensaje, esExito = true) {
-  const contenedor = document.getElementById('mensajeRespuesta');
-
-  contenedor.className = 'mensaje-respuesta'; // Reinicia clases
-  contenedor.classList.add(esExito ? 'success' : 'error');
- contenedor.innerHTML = mensaje;
-
-  // Mostrar con animación
-  setTimeout(() => contenedor.classList.add('visible'), 10);
-
-  // Scroll suave hacia el mensaje
-   contenedor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  // Ocultar después de 20 segundos
- setTimeout(() => {
-  contenedor.classList.remove('visible');
-  setTimeout(() => {
-    contenedor.innerHTML = mensaje;
-    contenedor.className = 'mensaje-respuesta'; // Limpiar clases
-  }, 500);
-}, 40000);
-}

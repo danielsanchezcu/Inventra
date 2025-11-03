@@ -221,30 +221,20 @@ input.form-control:focus {
   color: #fff;
 }
 
-/* === Mensajes flotantes === */
-.alerta-flotante {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #2ecc71;
-  color: #fff;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 1000;
-  display: none;
-  animation: fadeIn 0.4s ease;
+.alerta-pequena {
+  width: 350px !important;
+  min-height: 140px;
+  padding: 20px !important;
+  border-radius: 15px !important;
+  font-size: 13px !important;
+  font-family: 'Montserrat', sans-serif !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
 }
 
-.alerta-flotante.error {
-  background: #e74c3c;
-}
-
-.cerrar-alerta {
-  margin-left: 10px;
-  cursor: pointer;
-  font-weight: bold;
+/* Estilo para campos vacíos */
+.campo-vacio {
+  border: 1px solid #dc3545 !important; /* rojo */
+  transition: 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {

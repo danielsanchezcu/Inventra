@@ -2,15 +2,52 @@
 include 'includes/conexion.php';
 require("includes/encabezado.php");
 
+// Variables de mensaje
+$mensaje = '';
+$tipo = '';
+
 // --- ELIMINACIÓN DE REGISTRO ---
 if (isset($_GET['eliminar'])) {
     $idEliminar = intval($_GET['eliminar']); // Seguridad
+
+    // 1️⃣ Obtener información antes de eliminar
+    $sqlInfo = "SELECT e.placa_inventario, m.tipo AS tipo_mantenimiento, m.tecnico_nombre 
+                FROM historial_mantenimientos h
+                INNER JOIN registro_equipos e ON h.id_equipo = e.id
+                INNER JOIN mantenimiento m ON h.id_mantenimiento = m.id_mantenimiento
+                WHERE h.id_mantenimiento = $idEliminar
+                LIMIT 1";
+    $resultadoInfo = $conexion->query($sqlInfo);
+
+    if ($resultadoInfo && $resultadoInfo->num_rows > 0) {
+        $datos = $resultadoInfo->fetch_assoc();
+        $placa = $datos['placa_inventario'] ?? 'Desconocida';
+        $tipoMant = ucfirst($datos['tipo_mantenimiento'] ?? 'Desconocido');
+        $tecnico = $datos['tecnico_nombre'] ?? 'No especificado';
+    } else {
+        $placa = 'Desconocida';
+        $tipoMant = 'Desconocido';
+        $tecnico = 'No especificado';
+    }
+
+    // 2️⃣ Eliminar historial
     $sqlDelete = "DELETE FROM historial_mantenimientos WHERE id_mantenimiento = $idEliminar";
     if ($conexion->query($sqlDelete)) {
-        echo "<script>alert('Registro eliminado correctamente'); window.location='listadoMantenimiento.php';</script>";
-        exit;
+        $mensaje = "El historial se eliminó correctamente.";
+        $tipo = "success";
+
+        // 3️⃣ Crear notificación de eliminación
+        $fecha_actual = date('Y-m-d H:i:s');
+        $mensaje_notificacion = "Se eliminó el historial de mantenimiento <b>$tipoMant</b> 
+                                 del equipo con placa <b>$placa</b> realizado por <b>$tecnico</b>.";
+        $modulo = "Eliminación de Historial";
+
+        $sql_notificacion = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido)
+                             VALUES ('$mensaje_notificacion', '$modulo', '$fecha_actual', 0)";
+        $conexion->query($sql_notificacion);
     } else {
-        echo "<script>alert('Error al eliminar el registro');</script>";
+        $mensaje = "No se pudo eliminar el registro.";
+        $tipo = "error";
     }
 }
 
@@ -32,7 +69,6 @@ $sql = "SELECT h.id_mantenimiento, e.placa_inventario, e.serial, e.marca, e.mode
         LEFT JOIN asignacion_equipo a ON e.placa_inventario = a.placa_inventario
         WHERE 1=1";
 
-// Filtros dinámicos
 if (!empty($busqueda)) {
     $sql .= " AND (e.placa_inventario LIKE '%$busqueda%'
                 OR e.serial LIKE '%$busqueda%'
@@ -60,7 +96,9 @@ $result = $conexion->query($sql);
     <meta charset="UTF-8">
     <link rel="stylesheet" href="listadoMantenimiento.css">
     <title>Historial de Mantenimientos</title>
-    <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <main class="main">
@@ -71,20 +109,17 @@ $result = $conexion->query($sql);
     <!-- Formulario de búsqueda y filtros -->
     <form method="GET" class="filtros">
         <input type="text" name="busqueda" placeholder="Buscar..." value="<?= htmlspecialchars($busqueda) ?>">
-
         <select name="estado">
             <option value="">-- Estado --</option>
             <option value="Pendiente"   <?= $estado == 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
             <option value="En Proceso"  <?= $estado == 'En Proceso' ? 'selected' : '' ?>>En Proceso</option>
             <option value="Finalizado"  <?= $estado == 'Finalizado' ? 'selected' : '' ?>>Finalizado</option>
         </select>
-
         <select name="tipo">
             <option value="">-- Tipo --</option>
             <option value="preventivo"  <?= $tipo == 'preventivo' ? 'selected' : '' ?>>Preventivo</option>
             <option value="correctivo"  <?= $tipo == 'correctivo' ? 'selected' : '' ?>>Correctivo</option>
         </select>
-
         <button type="submit">Filtrar</button>
         <a href="listadoMantenimiento.php" class="btn-reset">Reset</a>
     </form>
@@ -125,32 +160,25 @@ $result = $conexion->query($sql);
                             <td><?= $row['repuestos_usados'] ?></td>
                             <td class="<?= str_replace(' ', '\\ ', $row['estado_historial']) ?>"><?= $row['estado_historial'] ?></td>
                             <td>
-                                <!-- Botón Ver Detalles -->
-                                <button type="button" class="btn-detalles" 
-                                        onclick="verDetalles(<?= htmlspecialchars(json_encode($row)) ?>)">
-                                    <i class="fa-solid fa-eye"></i>
+                                <button type="button" class="btn-detalles" onclick='verDetalles(<?= json_encode($row) ?>)'>
+                                    <i class='bx bx-show'></i>
                                 </button>
 
-                                <!-- Botón Eliminar -->
-                                <a href="listadoMantenimiento.php?eliminar=<?= $row['id_mantenimiento'] ?>" 
-                                onclick="return confirm('¿Seguro que deseas eliminar este registro del historial?')" 
-                                class="btn-eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                <button type="button" class="btn-eliminar" onclick="confirmarEliminacion(<?= $row['id_mantenimiento'] ?>)">
+                                    <i class='bx bx-trash'></i>
+                                </button>
                             </td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <tr>
-                        <td colspan="13" style="text-align:center;">No se encontraron mantenimientos.</td>
-                    </tr>
+                    <tr><td colspan="13" style="text-align:center;">No se encontraron mantenimientos.</td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
 </main>
 
-<!-- Modal Detalles -->
+<!-- MODAL DETALLES -->
 <div id="modalDetalles" class="modal" style="display:none;">
     <div class="modal-contenido">
         <span class="cerrar" onclick="cerrarModal()">&times;</span>
@@ -160,6 +188,22 @@ $result = $conexion->query($sql);
 </div>
 
 <script>
+function confirmarEliminacion(id) {
+    Swal.fire({
+        title: '¿Eliminar registro?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        customClass: { popup: "alerta-pequena" },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location = 'listadoMantenimiento.php?eliminar=' + id;
+        }
+    });
+}
+
 function verDetalles(data) {
     let contenedor = document.getElementById("detallesContenido");
     contenedor.innerHTML = `
@@ -197,4 +241,21 @@ function cerrarModal() {
 }
 </script>
 
+<?php if (!empty($mensaje)): ?>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  Swal.fire({
+    title: "Éxito",
+    text: '<?= $mensaje ?>',
+    icon: "success",
+    confirmButtonText: 'Entendido',
+    customClass: { popup: 'alerta-pequena' }
+  }).then(() => {
+    if ('<?= $tipo ?>' === 'success') {
+      window.location = 'listadoMantenimiento.php';
+    }
+  });
+});
+</script>
+<?php endif; ?>
 </html>

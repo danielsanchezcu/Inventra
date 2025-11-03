@@ -86,7 +86,7 @@ require("includes/encabezado.php");
               <img src="imagenes/excel-icono.png" alt="Excel">
             </button>
             <button class="btn-pdf" title="Exportar a PDF">
-             <img src="imagenes/pdf-icon.png" alt="PDF">
+            <img src="imagenes/pdf-icon.png" alt="PDF">
             </button>
           </div>
         </div>
@@ -114,12 +114,7 @@ require("includes/encabezado.php");
   <label for="reporte-historial" class="reporte-label">Historial de Mantenimientos</label>
   <div class="reporte-opciones">
     <select id="reporte-historial" class="reporte-select">
-      <option value="">Seleccione una opción</option>
       <option value="todos">Todos los registros</option>
-      <option value="por-tecnico">Por Técnico</option>
-      <option value="por-sede">Por Sede</option>
-      <option value="por-estado">Por Estado</option>
-    </select>
 
     <!-- Campo de búsqueda dinámico -->
     <input 

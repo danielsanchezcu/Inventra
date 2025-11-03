@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $checkSerial->execute();
     $checkSerial->store_result();
     if ($checkSerial->num_rows > 0) {
-        $errores[] = "⚠️ Registro fallido: ya existe un equipo con este serial";
+        $errores[] = "⚠️ Registro fallido: Ya existe un equipo con este serial";
     }
     $checkSerial->close();
 
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $checkPlaca->execute();
     $checkPlaca->store_result();
     if ($checkPlaca->num_rows > 0) {
-        $errores[] = "⚠️ Registro fallido: ya existe un equipo con esa placa de  inventario";
+        $errores[] = "⚠️ Registro fallido: Ya existe un equipo con esa placa de  inventario";
     }
     $checkPlaca->close();
 
@@ -79,15 +79,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param("ssssssdsssssssssssss", $marca, $modelo, $serial, $placa, $ubicacion, $proveedor, $costo, $factura, $tipo, $teclado, $mouse, $estado, $garantia, $procesador, $sistema, $ram, $disco, $fecha_registro, $imagen_nombre, $observaciones);
 
-    if ($stmt->execute()) {
+if ($stmt->execute()) {
+    //  Registrar notificación 
+    $mensaje_notificacion = "Se registró un nuevo equipo ($placa) - $marca $modelo";
+    $modulo_notificacion = "Registro de Equipos";
+
+    $sql_notif = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido) VALUES (?, ?, NOW(), 0)";
+    $stmt_notif = $conexion->prepare($sql_notif);
+    $stmt_notif->bind_param("ss", $mensaje_notificacion, $modulo_notificacion);
+    $stmt_notif->execute();
+    $stmt_notif->close();
+
         echo json_encode([
             "success" => true,
-            "message" => "✅ Equipo <strong>$placa</strong> registrado correctamente."
+            "message" => "Equipo <strong>$placa</strong> registrado correctamente."
         ]);
     } else {
         echo json_encode([
             "success" => false,
-            "message" => "❌ Error al registrar el equipo: " . $stmt->error
+            "message" => "Error al registrar el equipo: " . $stmt->error
         ]);
     }
 

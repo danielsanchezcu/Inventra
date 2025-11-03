@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Inventra-final/consultar-inventario/static/css/main.257c08cc.css",
+    "main.js": "/Inventra-final/consultar-inventario/static/js/main.e935a00e.js",
+    "static/js/453.66752a38.chunk.js": "/Inventra-final/consultar-inventario/static/js/453.66752a38.chunk.js",
+    "index.html": "/Inventra-final/consultar-inventario/index.html",
+    "main.257c08cc.css.map": "/Inventra-final/consultar-inventario/static/css/main.257c08cc.css.map",
+    "main.e935a00e.js.map": "/Inventra-final/consultar-inventario/static/js/main.e935a00e.js.map",
+    "453.66752a38.chunk.js.map": "/Inventra-final/consultar-inventario/static/js/453.66752a38.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.257c08cc.css",
+    "static/js/main.e935a00e.js"
+  ]
+}

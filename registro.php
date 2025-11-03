@@ -22,14 +22,9 @@ require("includes/encabezado.php");
     <div class="form-contenedor">
         <div class="formulario">
             <h3 class="titulo-seccion">
-            <i class="fas fa-desktop"></i> Especificaciones de equipo
+            <i class='bx bx-desktop'></i>Especificaciones de equipo
             </h3>
-            <div id="mensaje" class="alerta-flotante" style="display: none;">
-                <span class="cerrar-alerta" onclick="this.parentElement.style.display='none'">✖</span>
-                <span id="mensaje-texto"></span>
-            </div>
-
-            <form id="form-registro" enctype="multipart/form-data">
+            <form id="form-registro"  enctype="multipart/form-data" novalidate>
                 <div class="form-usuario">
                     <div class="form-group">
                         <label for="nombre" class="required-field">Marca</label>
@@ -123,7 +118,7 @@ require("includes/encabezado.php");
                 
                 <div class="form_equipo">
                     <h4 class="titulo-seccion">
-                    <i class="fas fa-microchip"></i> Especificaciones técnicas
+                    <i class='bx bx-chip'></i>Especificaciones técnicas
                     </h4>
                     <div class="form-grid">
                         <div class="form-group">
@@ -192,4 +187,5 @@ require("includes/encabezado.php");
         </div>
     </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="formulario.js"></script>

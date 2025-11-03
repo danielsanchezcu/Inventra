@@ -74,20 +74,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_asignacion, $fecha_devolucion, $observaciones);
 
     if ($stmt_insert->execute()) {
-        $sql_update_estado = "UPDATE registro_equipos SET estado = 'Asignado' WHERE id = ?";
-    $stmt_update = $conexion->prepare($sql_update_estado);
-    $stmt_update->bind_param("i", $id_equipo);
-    $stmt_update->execute();
-    $stmt_update->close();
 
-echo json_encode([
-'success' => true,
-'message' => "Equipo $placa asignado correctamente al.\nUsuario $nombres $apellidos"
-]);
+        // Actualizar estado del equipo
+        $sql_update_estado = "UPDATE registro_equipos SET estado = 'Asignado' WHERE id = ?";
+        $stmt_update = $conexion->prepare($sql_update_estado);
+        $stmt_update->bind_param("i", $id_equipo);
+        $stmt_update->execute();
+        $stmt_update->close();
+
+        // Registrar notificación
+        $mensaje_notificacion = "Equipo <strong>$placa</strong> asignado a $nombres $apellidos";
+        $modulo = "Asignar Equipo";
+        $sql_notif = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido) VALUES (?, ?, NOW(), 0)";
+        $stmt_notif = $conexion->prepare($sql_notif);
+        $stmt_notif->bind_param("ss", $mensaje_notificacion, $modulo);
+        $stmt_notif->execute();
+        $stmt_notif->close();
+        // FIN DE LA INSERCIÓN DE NOTIFICACIÓN
+
+        echo json_encode([
+            'success' => true,
+            'message' => "Equipo <strong>$placa</strong> asignado correctamente a <strong>$nombres $apellidos</strong>."
+        ]);
+
     } else {
         echo json_encode(['success' => false, 'message' => 'Error al registrar: ' . $stmt_insert->error]);
     }
 
     $stmt_insert->close();
     $conexion->close();
-}
+}   
+?>

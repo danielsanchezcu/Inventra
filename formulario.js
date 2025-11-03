@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const tecladoInput = document.getElementById('teclado');
   const mouseInput = document.getElementById('mouse');
 
-  // Mostrar/Ocultar periféricos si el tipo es Desktop
+  // === Mostrar/Ocultar periféricos si el tipo es Desktop ===
   if (tipoSelect) {
     tipoSelect.addEventListener('change', function () {
       if (this.value === 'Desktop') {
@@ -19,18 +19,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Máscara para serial: solo letras y números, mayúsculas, máx 10
+  // === Máscara para serial ===
   const serial = document.getElementById('serial');
   if (serial) {
     serial.addEventListener('input', function () {
       this.value = this.value
         .replace(/[^a-zA-Z0-9]/g, '')
         .toUpperCase()
-        .slice(0, 10); 
+        .slice(0, 10);
     });
   }
 
-  // Máscara para Placa de Inventario (formato fijo INV-###)
+  // === Máscara para Placa de Inventario (INV-###) ===
   const placa = document.getElementById('placa_inventario');
   if (placa) {
     placa.value = 'INV-';
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Máscara para costo: solo números y separadores
+  // === Máscara para costo ===
   const costo = document.getElementById('costo');
   if (costo) {
     costo.addEventListener('input', function () {
@@ -61,11 +61,51 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById("form-registro");
 
   if (form) {
+    // Evita que el navegador haga la validación nativa
+    form.setAttribute("novalidate", true);
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const formData = new FormData(form);
 
+      // === VALIDACIÓN DE CAMPOS VACÍOS (TODOS LOS REQUIRED) ===
+      const camposRequeridos = form.querySelectorAll("[required]");
+      const vacios = [];
+
+      camposRequeridos.forEach(campo => {
+        campo.style.border = ""; // limpia estilos anteriores
+        if (!campo.value.trim()) {
+          vacios.push(campo);
+          campo.style.border = "0.5px solid #dc3545";
+          campo.style.borderRadius = "8px";
+          campo.style.transition = "0.3s";
+        }
+      });
+
+      if (vacios.length > 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          html: `Por favor completa todos los campos obligatorios antes de continuar.`,
+          background: '#fff',
+          color: '#012e42',
+          confirmButtonColor: '#ffc107',
+          confirmButtonText: 'Entendido',
+          timer: 5000,
+          timerProgressBar: true,
+          customClass: { popup: 'alerta-pequena' }
+        });
+
+        // Quita los bordes rojos después de 5 segundos
+        setTimeout(() => {
+          vacios.forEach(campo => (campo.style.border = ""));
+        }, 5000);
+
+        return; // Evita el envío
+      }
+
+      // === Si todo está completo, proceder con el envío ===
       fetch("api/apiregistrar_equipo.php", {
         method: "POST",
         body: formData
@@ -73,40 +113,39 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            mostrarMensaje("success", data.message);
+            mostrarSweetAlert("success", data.message);
             form.reset();
-            if (perifericosSection) {
-              perifericosSection.classList.remove("mostrar");
-            }
+            if (perifericosSection) perifericosSection.classList.remove("mostrar");
           } else {
-            mostrarMensaje("error", data.message);
+            mostrarSweetAlert("warning", data.message);
           }
         })
         .catch(error => {
           console.error("Error:", error);
-          mostrarMensaje("error", "❌ Error al enviar el formulario.");
+          mostrarSweetAlert("error", "Error al enviar el formulario.");
         });
     });
   }
 
-  // Función para mostrar mensajes 
-  function mostrarMensaje(tipo, texto) {
-    const mensaje = document.getElementById("mensaje");
-    const mensajeTexto = document.getElementById("mensaje-texto");
-
-    if (!mensaje || !mensajeTexto) return;
-
-    mensajeTexto.innerHTML = texto;
-    mensaje.classList.remove("success");
-    if (tipo === "success") {
-      mensaje.classList.add("success");
-    }
-
-    mensaje.style.display = "block";
-    mensaje.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    setTimeout(() => {
-      mensaje.style.display = "none";
-    }, 15000);
+  // === Función para mostrar SweetAlert2 personalizada ===
+  function mostrarSweetAlert(tipo, mensaje) {
+    Swal.fire({
+      icon: tipo,
+      title:
+        tipo === "success"
+          ? "Registro completado"
+          : tipo === "warning"
+          ? "Aviso"
+          : "Error",
+      html: `${mensaje}`,
+      background: "#fefefeff",
+      color: "#012e42",
+      confirmButtonColor: "#28a745",
+      confirmButtonText: "Listo",
+      timer: tipo === "success" ? 7000 : 6000,
+      timerProgressBar: true,
+      customClass: { popup: "alerta-pequena" },
+    });
   }
+
 });

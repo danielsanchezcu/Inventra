@@ -2,12 +2,12 @@
 include 'includes/conexion.php';
 
 if ($_POST) {
-    $placa = $_POST['id']; 
-    $fecha = $_POST["fecha_adquisicion"];
-    $tecnico_id = $_POST['tecnico_nombre']; 
-    $tipo = $_POST['tipo'];
-    $estado = $_POST['estado'];
-    $descripcion = $_POST['descripcion'];
+    $placa = trim($_POST['id']); 
+    $fecha = trim($_POST["fecha_adquisicion"]);
+    $tecnico_id = trim($_POST['tecnico_nombre']); 
+    $tipo = trim($_POST['tipo']);
+    $estado = trim($_POST['estado']);
+    $descripcion = trim($_POST['descripcion']);
     $repuestos = $_POST['repuesto'] ?? [];
     $cantidades = $_POST['cantidad'] ?? [];
 
@@ -16,88 +16,175 @@ if ($_POST) {
     $msj = "";
     $clase = "";
 
-    // ✅ Obtener id del equipo
-    $sql = "SELECT id FROM registro_equipos WHERE placa_inventario = '$placa' LIMIT 1";
-    $resultado = $conexion->query($sql);
-    $row = $resultado->fetch_assoc();
+    // 🔍 Validar campos obligatorios
+    $faltan = [];
+    if (empty($placa)) $faltan[] = 'id';
+    if (empty($fecha)) $faltan[] = 'fecha_adquisicion';
+    if (empty($tecnico_id)) $faltan[] = 'tecnico';
+    if (empty($tipo)) $faltan[] = 'tipo';
+    if (empty($estado)) $faltan[] = 'estado';
+    if (empty($descripcion)) $faltan[] = 'descripcion';
 
-    if (!$row) {
-        $msj = "❌ Error: No se encontró un equipo con la placa $placa";
-        $clase = "error";
+    if (!empty($faltan)) {
+        // Mostrar alerta si faltan campos
+        echo "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: 'Campos Incompletos',
+                text: 'Por favor completa todos los campos obligatorios antes de continuar.',
+                icon: 'warning',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#ffc107',
+                customClass: { popup: 'alerta-pequena'}
+            });
+
+            //  Resaltar los campos faltantes
+            const faltantes = " . json_encode($faltan) . ";
+            faltantes.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.style.border = '1px solid #dc3545';
+                }
+            });
+
+            // Quitar el rojo al escribir
+            faltantes.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('input', () => {
+                        input.style.border = '';
+                        input.style.backgroundColor = '';
+                    });
+                }
+            });
+        });
+        </script>";
     } else {
-        $id_equipo = $row['id'];
+        // Si no faltan campos, continuar con el proceso
+        $sql = "SELECT id FROM registro_equipos WHERE placa_inventario = '$placa' LIMIT 1";
+        $resultado = $conexion->query($sql);
+        $row = $resultado->fetch_assoc();
 
-        // Verificar mantenimiento activo
-        $sql_check = "SELECT * FROM mantenimiento WHERE id_equipo = '$id_equipo' AND LOWER(estado) != 'finalizado'";
-        $resultado_check = $conexion->query($sql_check);
-
-        if ($resultado_check->num_rows > 0 && strtolower($estado) != 'finalizado') {
-            $msj = "❌ Este equipo ya tiene un mantenimiento activo. Finalice el anterior para registrar uno nuevo.";
+        if (!$row) {
+            $msj = "Error: No se encontró un equipo con la placa $placa";
             $clase = "error";
         } else {
-            // ✅ Obtener nombre completo del técnico
-            $sql_tecnico = "SELECT CONCAT(nombres, ' ', apellidos) AS nombre_completo 
-                            FROM tecnicos 
-                            WHERE id_tecnico = '$tecnico_id' 
-                            LIMIT 1";
-            $res_tecnico = $conexion->query($sql_tecnico);
-            $nombre_tecnico = ($res_tecnico && $res_tecnico->num_rows > 0) 
-                ? $res_tecnico->fetch_assoc()['nombre_completo'] 
-                : 'Desconocido';
+            $id_equipo = $row['id'];
 
-            // ✅ Insertar mantenimiento (deja que el AUTO_INCREMENT maneje el ID)
-            $sql_insert = "INSERT INTO mantenimiento 
-                (id_equipo, tecnico_nombre, tecnico_id, fecha_mantenimiento, tipo, estado, descripcion) 
-                VALUES ('$id_equipo', '$nombre_tecnico', '$tecnico_id', '$fecha', '$tipo', '$estado', '$descripcion')";
-            $resultado_insert = $conexion->query($sql_insert);
+            // Verificar solo el último mantenimiento del equipo
+            $sql_check = "
+                SELECT estado 
+                FROM mantenimiento 
+                WHERE id_equipo = '$id_equipo'
+                ORDER BY id_mantenimiento DESC
+                LIMIT 1
+            ";
+            $resultado_check = $conexion->query($sql_check);
+            $registro_activo = false;
 
-            if ($resultado_insert) {
-                $id_mantenimiento = $conexion->insert_id;
-
-                // Insertar repuestos si es correctivo
-                if ($tipo === 'correctivo' && !empty($repuestos)) {
-                    $num_repuestos = count($repuestos);        
-                    for ($i = 0; $i < $num_repuestos; $i++) { 
-                        $repuesto = htmlspecialchars($repuestos[$i]);
-                        $cantidad = htmlspecialchars($cantidades[$i]);
-                        $sql_rep = "INSERT INTO mantenimiento_repuesto 
-                            (id_mantenimiento, id_repuesto, cantidad) 
-                            VALUES ('$id_mantenimiento', '$repuesto', '$cantidad')";
-                        $conexion->query($sql_rep);
-                    }
+            if ($resultado_check && $resultado_check->num_rows > 0) {
+                $ultimo = $resultado_check->fetch_assoc();
+                $estado_ultimo = strtolower(trim($ultimo['estado'] ?? ''));
+                
+                // Si el último mantenimiento no está finalizado, bloquear
+                if ($estado_ultimo !== 'finalizado' && $estado_ultimo !== '') {
+                    $registro_activo = true;
                 }
+            }
 
-                // Actualizar estado del equipo si se finaliza
-                if (strtolower($estado) == 'finalizado') {
-                    $sql_update_equipo = "UPDATE registro_equipos SET estado = 'Disponible' WHERE id = '$id_equipo'";
-                    $conexion->query($sql_update_equipo);
-                }
-
-                $msj = "✅ Nuevo registro creado exitosamente";
-                $clase = "success";
-            } else {
-                $msj = "❌ Error: " . $conexion->error;
+            if ($registro_activo && strtolower($estado) != 'finalizado') {
+                $msj = "Este equipo ya tiene un mantenimiento activo. Finalice el anterior para registrar uno nuevo.";
                 $clase = "error";
+            } else {
+                $sql_tecnico = "SELECT CONCAT(nombres, ' ', apellidos) AS nombre_completo 
+                                FROM tecnicos 
+                                WHERE id_tecnico = '$tecnico_id' 
+                                LIMIT 1";
+                $res_tecnico = $conexion->query($sql_tecnico);
+                $nombre_tecnico = ($res_tecnico && $res_tecnico->num_rows > 0) 
+                    ? $res_tecnico->fetch_assoc()['nombre_completo'] 
+                    : 'Desconocido';
+
+                $sql_insert = "INSERT INTO mantenimiento 
+                    (id_equipo, tecnico_nombre, tecnico_id, fecha_mantenimiento, tipo, estado, descripcion) 
+                    VALUES ('$id_equipo', '$nombre_tecnico', '$tecnico_id', '$fecha', '$tipo', '$estado', '$descripcion')";
+                $resultado_insert = $conexion->query($sql_insert);
+
+                if ($resultado_insert) {
+                    $id_mantenimiento = $conexion->insert_id;
+
+                    // Insertar repuestos si aplica
+                    if ($tipo === 'correctivo' && !empty($repuestos)) {
+                        $num_repuestos = count($repuestos);        
+                        for ($i = 0; $i < $num_repuestos; $i++) { 
+                            $repuesto = htmlspecialchars($repuestos[$i]);
+                            $cantidad = htmlspecialchars($cantidades[$i]);
+                            $sql_rep = "INSERT INTO mantenimiento_repuesto 
+                                (id_mantenimiento, id_repuesto, cantidad) 
+                                VALUES ('$id_mantenimiento', '$repuesto', '$cantidad')";
+                            $conexion->query($sql_rep);
+                        }
+                    }
+
+                    // Actualizar el estado del equipo si se finaliza
+                    if (strtolower($estado) == 'finalizado') {
+                        $sql_update_equipo = "UPDATE registro_equipos SET estado = 'Disponible' WHERE id = '$id_equipo'";
+                        $conexion->query($sql_update_equipo);
+                    }
+
+                    // Notificación
+                    $sql_equipo = "SELECT placa_inventario, marca, modelo FROM registro_equipos WHERE id = '$id_equipo' LIMIT 1";
+                    $res_equipo = $conexion->query($sql_equipo);
+                    $equipo = $res_equipo->fetch_assoc();
+                    $placa_equipo = $equipo['placa_inventario'];
+                    $marca_equipo = $equipo['marca'];
+                    $modelo_equipo = $equipo['modelo'];
+
+                    $mensaje_notificacion = "Se registró un mantenimiento ($tipo) para el equipo ($placa_equipo) - $marca_equipo $modelo_equipo";
+                    $modulo = "Mantenimiento de Equipos";
+                    $fecha_actual = date('Y-m-d H:i:s');
+
+                    $sql_notificacion = "INSERT INTO notificaciones (mensaje, modulo, fecha, leido) 
+                                        VALUES ('$mensaje_notificacion', '$modulo', '$fecha_actual', 0)";
+                    $conexion->query($sql_notificacion);
+
+                    $msj = "Nuevo registro creado exitosamente";
+                    $clase = "success";
+                } else {
+                    $msj = "Error: " . $conexion->error;
+                    $clase = "error";
+                }
             }
         }
-    }
 
-    //Mostrar mensaje
-    echo "<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const mensajeBox = document.getElementById('mensaje');
-        const mensajeTexto = document.getElementById('mensaje-texto');
-        mensajeTexto.textContent = '" . htmlspecialchars($msj, ENT_QUOTES, 'UTF-8') . "';
-        mensajeBox.className = 'mensaje-form $clase';
-        mensajeBox.style.display = 'block';
-        setTimeout(() => { mensajeBox.style.display = 'none'; }, 6000);
-    });
-    </script>";
+        // Mostrar mensaje SweetAlert (éxito o error)
+        echo "
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        Swal.fire({
+            title: '" . ($clase === 'success' ? 'Éxito' : 'Error') . "',
+            text: '" . addslashes($msj) . "',
+            icon: '" . ($clase === 'success' ? 'success' : 'error') . "',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '" . ($clase === 'success' ? '#28a745' : '#dc3545') . "',
+            customClass: { popup: 'alerta-pequena' }
+        }).then(() => {
+            if ('" . $clase . "' === 'success') {
+                window.location = 'mantenimiento.php';
+            }
+        });
+        });
+        </script>";
+    }
 }
 ?>
 
 <?php require("includes/encabezado.php"); ?>
-<link rel="stylesheet" href="mantenimientos.css">
+<link rel="stylesheet" href="mantenimientos.css?v=<?php echo time(); ?>">
+
 
 <main class="main">
     <div class="main-header">
@@ -106,7 +193,7 @@ if ($_POST) {
     <div class="form-contenedor">
         <div class="formulario">
             <h3 class="titulo-seccion">
-                <i class="fas fa-desktop"></i> Listado de Equipos
+                <i class='bx bx-desktop'></i>Listado de Equipos
             </h3>
             <div id="mensaje" class="mensaje-form" style="display: none;">
                 <span id="mensaje-texto"></span>
@@ -143,7 +230,7 @@ if ($_POST) {
             </div>       
         </div>
 
-        <h3 class="titulo-seccion"><i class="fas fa-tools"></i> Mantenimiento</h3>
+        <h3 class="titulo-seccion"><i class='bx bx-cog'></i>Mantenimiento</h3>
         <form action="" method="post">
             <div class="formulariorow">
                 <div class="campos">
@@ -152,11 +239,11 @@ if ($_POST) {
                 </div>
                 <div class="campos">
                     <label for="fecha_adquisicion" class="required-field">Fecha</label>
-                    <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion" required>
+                    <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion">
                 </div>
                 <div class="campos">
                     <label for="tecnico" class="required-field">Técnico Encargado</label>
-                    <select class="form-control" id="tecnico" name="tecnico_nombre" required>
+                    <select class="form-control" id="tecnico" name="tecnico_nombre">
                         <option value="">Seleccione un técnico</option>
                         <?php
                         $sql_tec = "
