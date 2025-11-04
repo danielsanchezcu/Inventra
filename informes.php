@@ -8,14 +8,14 @@ require("includes/encabezado.php");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reportes - Inventra</title>
-  <link rel="stylesheet" href="informes.css">
+  <link rel="stylesheet" href="css/styleinformes.css">
   <script src="https://kit.fontawesome.com/a2e0e9ad4d.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <section class="reportes-container">
     <div class="reportes-header">
       <h2 class="titulo-reportes">
-        <i class="fas fa-file-alt"></i> Reportes de Inventario
+        <i class='bx bxs-file'></i>Reportes de Inventario
       </h2>
       
       <p class="descripcion-reportes">

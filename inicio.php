@@ -1,5 +1,6 @@
 
 <?php require("includes/encabezado.php"); ?>
+<link rel="stylesheet" href="<?= $base ?>css/styleinicio.css">
 
 <main class="main-bienvenida">
   <div class="contenido-inicio">
@@ -30,5 +31,3 @@
     </footer>
   </div>
 </main>
-
-<?php require("includes/pie.php"); ?>

@@ -94,7 +94,7 @@ $result = $conexion->query($sql);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="listadoMantenimiento.css">
+    <link rel="stylesheet" href="css/stylelistadoMantenimiento.css">
     <title>Historial de Mantenimientos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">

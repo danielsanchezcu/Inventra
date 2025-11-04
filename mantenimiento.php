@@ -183,7 +183,7 @@ if ($_POST) {
 ?>
 
 <?php require("includes/encabezado.php"); ?>
-<link rel="stylesheet" href="mantenimientos.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="css/stylemantenimientos.css?v=<?php echo time(); ?>">
 
 
 <main class="main">

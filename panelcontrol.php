@@ -31,7 +31,7 @@ require("includes/encabezado.php");
 
 
 
-
+<link rel="stylesheet" href="<?= $base ?>css/styledashb.css">
   <div class="contenido-dashboard">
   <h4>Dashboard</h4>
 

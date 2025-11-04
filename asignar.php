@@ -11,7 +11,7 @@ require("includes/encabezado.php");
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styleasignacion.css">
+    <link rel="stylesheet" href="css/styleasignacion.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 </head>

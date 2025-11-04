@@ -103,7 +103,7 @@ if ($_POST) {
     $num = $row["num"] + 1;
 }
 ?>
-<link rel="stylesheet" href="repuestos.css">
+<link rel="stylesheet" href="css/stylerepuestos.css">
 <main class="main">
     <div class="main-header">
         <h2>Gestión de Repuestos</h2>

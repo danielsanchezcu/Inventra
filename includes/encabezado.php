@@ -34,11 +34,8 @@ $base = '/Inventra-final/';
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
 
     <!-- Estilos locales -->
-    <link rel="stylesheet" href="<?= $base ?>mantenimiento.css">
-    <link rel="stylesheet" href="<?= $base ?>encabezado.css">
-    <link rel="stylesheet" href="<?= $base ?>index1.css">
-    <link rel="stylesheet" href="<?= $base ?>styledashb.css">
-    <link rel="stylesheet" href="<?= $base ?>modalcerrar.css">
+    <link rel="stylesheet" href="<?= $base ?>css/encabezado.css">
+    <link rel="stylesheet" href="<?= $base ?>css/modalcerrar.css">
 
     <!-- Estilo global para asegurar la tipografía -->
     <style>

@@ -6,7 +6,7 @@ require("includes/encabezado.php");
 <head>
   <meta charset="UTF-8">
   <title>Registrar Técnicos - Inventra</title>
-  <link rel="stylesheet" href="registrar_tecnico.css">
+  <link rel="stylesheet" href="css/styleregistrar_tecnico.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>

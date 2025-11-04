@@ -7,7 +7,7 @@
   <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="stylelogin.css">
+  <link rel="stylesheet" href="css/stylelogin.css">
 
   <!-- Tipografía Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
