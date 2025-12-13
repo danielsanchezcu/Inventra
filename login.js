@@ -5,7 +5,6 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
   const contrasena = document.getElementById("contrasena").value;
   const mensajeDiv = document.getElementById("mensaje");
 
-  
   mensajeDiv.classList.remove("mensaje-error", "mensaje-exito", "mensaje-oculto");
   mensajeDiv.textContent = "";
 
@@ -20,13 +19,11 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
     })
     .then(data => {
       if (data.success) {
-        // mensajeDiv.textContent = "Inicio de sesión exitoso";
-        // mensajeDiv.classList.add("mensaje-exito");
-        location.href = "inicio.php";
+        // AÑADIDO: guardar el nombre del usuario para mostrar en el inicio
+        sessionStorage.setItem("nombre_usuario", data.nombre);
 
-        // setTimeout(() => {
-        //   window.location.href = "inicio.php";
-        // }, 1500);
+        // Redirigir al inicio
+        location.href = "inicio.php";
       } else {
         mensajeDiv.textContent = data.message;
         mensajeDiv.classList.add("mensaje-error");

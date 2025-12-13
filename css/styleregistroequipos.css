@@ -441,3 +441,64 @@ button:hover {
   font-family: 'Montserrat', sans-serif !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
 }
+
+/* Contenedor de alerta centrado y moderno */
+.alerta-permiso {
+    max-width: 450px;
+    margin: 5rem auto;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, #012e42, #50b8f8); /* degradado moderno */
+    border-radius: 15px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Icono grande de alerta */
+.alerta-permiso .icono-alerta i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: bounce 1s infinite;
+}
+
+/* Títulos y texto */
+.alerta-permiso h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.alerta-permiso p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botón moderno */
+.alerta-permiso .boton-ingreso {
+    display: inline-block;
+    padding: 0.7rem 1.5rem; 
+    background-color: #fff;
+    color: #012e42;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.alerta-permiso .boton-ingreso:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+    transform: translateY(-2px);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}

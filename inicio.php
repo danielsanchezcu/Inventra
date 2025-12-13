@@ -1,11 +1,23 @@
+<?php 
+session_start();  
+require("includes/encabezado.php"); 
 
-<?php require("includes/encabezado.php"); ?>
+// Redirigir a login si no hay sesión activa
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Obtener el nombre del usuario desde la sesión y tomar solo el primer nombre
+$nombreCompleto = isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario'] : "Invitado";
+$nombre = explode(' ', $nombreCompleto)[0];
+?>
 <link rel="stylesheet" href="<?= $base ?>css/styleinicio.css">
 
 <main class="main-bienvenida">
   <div class="contenido-inicio">
     <div class="logo-bienvenida">
-      <h1>Bienvenido a <span class="color-acento">Inventra</span></h1>
+      <h1>Hola, <?= htmlspecialchars($nombre) ?>. Bienvenido a <span class="color-acento">Inventra</span></h1>
       <p>Tu sistema para la gestión inteligente de equipos y asignaciones</p>
     </div>
 

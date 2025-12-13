@@ -38,19 +38,19 @@ if ($result->num_rows !== 1) {
 $usuario = $result->fetch_assoc();
 
 // Verificar contraseña
-
 if (!password_verify($contrasena, $usuario['contrasena'])) {
     echo json_encode(["success" => false, "message" => "Usuario o contraseña incorrectos"]);
     exit;
 }
 
-// Verificar permisos
-if ($usuario['permisos'] !== 'administrador') {
-    echo json_encode(["success" => false, "message" => "No tienes permisos para acceder"]);
-    exit;
-}
+// Guardar sesión para cualquier usuario válido (administrador o técnico)
+session_start();
+$_SESSION['id_usuario'] = $usuario['id_usuario'];
+$_SESSION['nombre_usuario'] = $usuario['nombre'];
+$_SESSION['correo_usuario'] = $usuario['correo'];
+$_SESSION['rol'] = $usuario['permisos']; // 'administrador' o 'tecnico'
 
-// Si todo es válido, enviar respuesta de éxito
+// Enviar respuesta de éxito
 echo json_encode([
     "success" => true,
     "id_usuario" => $usuario['id_usuario'],

@@ -1,4 +1,18 @@
 <?php
+session_start();
+
+// Redirigir a login si no hay sesión activa
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Obtener rol del usuario
+$rol = $_SESSION['rol'];
+
+// Verificar permisos para este módulo (solo administradores)
+$accesoPermitido = ($rol === 'administrador');
+
 require("includes/encabezado.php");
 ?>
 
@@ -13,22 +27,26 @@ require("includes/encabezado.php");
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styleregistroequipos.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+<body>
+
+
+<!-- Formulario de registrar equipo -->
 <main class="main">
-        <div class="main-header">
-            <h2>Registrar Equipo</h2>
-        </div>
+    <div class="main-header">
+        <h2>Registrar Equipo</h2>
+    </div>
     <div class="form-contenedor">
+        <?php if ($accesoPermitido): ?>
         <div class="formulario">
             <h3 class="titulo-seccion">
-            <i class='bx bx-desktop'></i>Especificaciones de equipo
+                <i class='bx bx-desktop'></i> Especificaciones de equipo
             </h3>
-            <form id="form-registro"  enctype="multipart/form-data" novalidate>
+            <form id="form-registro" enctype="multipart/form-data" novalidate>
                 <div class="form-usuario">
                     <div class="form-group">
-                        <label for="nombre" class="required-field">Marca</label>
-                        <input type="text" id="nombre" name="marca" placeholder="Marca" required>
+                        <label for="marca" class="required-field">Marca</label>
+                        <input type="text" id="marca" name="marca" placeholder="Marca" required>
                     </div>
                     
                     <div class="form-group">
@@ -37,43 +55,35 @@ require("includes/encabezado.php");
                     </div>
                     
                     <div class="form-group">
-                        <label for="serial" class="required-field">
-                            Serial 
-                            <span class="tooltip">
-                                <i class='bx bx-info-circle'></i>
-                                <span class="tooltiptext">Debe contener hasta 10 caracteres alfanuméricos</span>
-                            </span>
-                        </label>
-                            <input type="text" id="serial" name="serial" placeholder="Serial" required>
+                        <label for="serial" class="required-field">Serial</label>
+                        <input type="text" id="serial" name="serial" placeholder="Serial" required>
                     </div>
-
                     
                     <div class="form-group">
                         <label for="placa_inventario" class="required-field">Placa de Inventario</label>
-                        <input type="text" id="placa_inventario" name="placa_inventario" placeholder="Ej: INV - 001" required>
+                        <input type="text" id="placa_inventario" name="placa_inventario" placeholder="Ej: INV-001" required>
                     </div>
-                
+                    
                     <div class="form-group">
-                            <label for="ubicacion_fisica" class="required-field">Ubicación Física</label>
-                            <input type="text" id="ubicacion_fisica" name="ubicacion_fisica" placeholder="Ubicación Física" required>
-                    </div>    
-                
+                        <label for="ubicacion_fisica" class="required-field">Ubicación Física</label>
+                        <input type="text" id="ubicacion_fisica" name="ubicacion_fisica" placeholder="Ubicación Física" required>
+                    </div>
+                    
                     <div class="form-group">
-                            <label for="proveedor" class="required-field">Proveedor</label>
-                            <input type="text" id="proveedor" name="proveedor" placeholder="Proveedor" required>
-                    </div>  
-
+                        <label for="proveedor" class="required-field">Proveedor</label>
+                        <input type="text" id="proveedor" name="proveedor" placeholder="Proveedor" required>
+                    </div>
+                    
                     <div class="form-group">
-                            <label for="costo" class="required-field">Costo</label>
-                            <input type="text" id="costo" name="costo" placeholder="$" required>
-                    </div>  
-
+                        <label for="costo" class="required-field">Costo</label>
+                        <input type="text" id="costo" name="costo" placeholder="$" required>
+                    </div>
+                    
                     <div class="form-group">
-                            <label for="numero_factura" class="required-field">Número de factura</label>
-                            <input type="text" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
-                    </div>  
-
-
+                        <label for="numero_factura" class="required-field">Número de factura</label>
+                        <input type="text" id="numero_factura" name="numero_factura" placeholder="Número de factura" required>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="tipo" class="required-field">Tipo de Equipo</label>
                         <select id="tipo" name="tipo" required>
@@ -81,22 +91,8 @@ require("includes/encabezado.php");
                             <option value="Desktop">Desktop</option>
                             <option value="Laptop">Laptop</option>
                             <option value="WorkStation">WorkStation</option>
-                            <option value="Otro">Otro</option> 
+                            <option value="Otro">Otro</option>
                         </select>
-                    </div>
-
-                    <div id="perifericos-desktop">
-                        <h3>Periféricos</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="teclado" class="required-field">Teclado</label>
-                                <input type="text" id="teclado" name="teclado" placeholder="Serial del teclado">
-                            </div>
-                            <div class="form-group">
-                                <label for="mouse" class="required-field">Mouse</label>
-                                <input type="text" id="mouse" name="mouse" placeholder="Serial del mouse">
-                            </div>
-                        </div>
                     </div>
 
                     <div class="form-group">
@@ -112,13 +108,13 @@ require("includes/encabezado.php");
                     <div class="form-group">
                         <label for="fecha_garantia" class="required-field">Fecha fin de garantía</label>
                         <input type="date" id="fecha_garantia" name="fecha_garantia" required>
-                        </div>
+                    </div>
+                    
                 </div>
-                
                 
                 <div class="form_equipo">
                     <h4 class="titulo-seccion">
-                    <i class='bx bx-chip'></i>Especificaciones técnicas
+                        <i class='bx bx-chip'></i> Especificaciones técnicas
                     </h4>
                     <div class="form-grid">
                         <div class="form-group">
@@ -160,7 +156,7 @@ require("includes/encabezado.php");
                             <input type="date" id="fecha_adquisicion" name="fecha_adquisicion" required>
                         </div>
 
-                    <div class="form-group">
+                        <div class="form-group">
                             <label for="imagen_equipo" class="required-field">Imagen del Equipo</label>
                             <input type="file" id="imagen_equipo" name="imagen_equipo" accept="image/*" required>
                         </div>
@@ -171,8 +167,6 @@ require("includes/encabezado.php");
                         <textarea id="observaciones" name="observaciones" placeholder="Ingrese cualquier observación relevante..."></textarea>
                     </div>
                 </div>
-
-                
 
                 <div class="buttons">
                     <button type="reset">
@@ -185,7 +179,25 @@ require("includes/encabezado.php");
 
             </form>
         </div>
+    <?php else: ?>
+    <!-- Mensaje para técnicos -->
+<div class="alerta-permiso">
+    <div class="icono-alerta">
+        <i class='bx bx-lock-alt'></i>
+    </div>
+    <h3>Acceso Denegado</h3>
+    <p>Lo sentimos, no tienes permisos para acceder a este módulo.</p>
+    <a href="inicio.php" class="boton-ingreso">Volver al inicio</a>
+</div>
+<?php endif; ?>
+</div>
+</main>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php if ($accesoPermitido): ?>
 <script src="formulario.js"></script>
+<?php endif; ?>
+
+</body>
+</html>
