@@ -1,7 +1,7 @@
 <?php
-$servername = "localhost";
+$servername = "db";
 $username = "root";
-$password = "";
+$password = "root1234";
 $bd = "inventrabd";
 
 // === Conexión MYSQLI (para módulos antiguos) ===

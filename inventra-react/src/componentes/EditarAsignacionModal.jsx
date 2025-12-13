@@ -31,7 +31,7 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
 
     useEffect(() => {
         if (asignacion?.id_asignacion) {
-            axios.get(`http://localhost/Inventra-final/api/api_get_asignacion.php?id_asignacion=${asignacion.id_asignacion}`)
+            axios.get(`${window.location.origin}/api/api_get_asignacion.php?id_asignacion=${asignacion.id_asignacion}`)
                 .then(res => {
                     if (res.data.success && res.data.asignacion) {
                         setFormData(prev => ({
@@ -54,7 +54,8 @@ const EditarAsignacionModal = ({ asignacion, onClose, onUpdate }) => {
 
         try {
             const response = await axios.post(
-                'http://localhost/Inventra-final/api/api_editar_asignacion.php',
+                `${window.location.origin}/api/api_editar_asignacion.php`,
+
                 JSON.stringify(formData),
                 { headers: { 'Content-Type': 'application/json' } }
             );

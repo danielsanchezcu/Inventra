@@ -26,7 +26,7 @@ const ConsultarInventario = () => {
   const fetchAsignaciones = useCallback(async () => {
     try {
       const response = await axios.get(
-        'http://localhost/Inventra-final/api/api_inventario.php',
+        `${window.location.origin}/api/api_inventario.php`,
         {
           params: {
             busqueda: textoFiltro,
@@ -100,10 +100,11 @@ const ConsultarInventario = () => {
     setModalAbierto(true);
   };
 
+  // ✅ Solo esta parte fue corregida
   const eliminarAsignacion = async () => {
     try {
       const response = await axios.delete(
-        'http://localhost/Inventra-final/api/api_eliminar_asignacion.php',
+        `${window.location.origin}/api/api_eliminar_asignacion.php`,
         {
           data: { id_asignacion: asignacionAEliminar.id_asignacion },
         }
@@ -152,7 +153,6 @@ const ConsultarInventario = () => {
   const itemsActuales = asignacionesFiltradas.slice(indicePrimerItem, indiceUltimoItem);
 
   const editarAsignacion = (id) => {
-    
     setAsignacionAEditar({ id_asignacion: id });
     setModalEditarAbierto(true);
   };
@@ -328,7 +328,6 @@ const ConsultarInventario = () => {
             asignacion={asignacionAEditar}
             onClose={() => setModalEditarAbierto(false)}
             onUpdate={(actualizada) => {
-              
               setAsignaciones((prev) =>
                 prev.map((asig) =>
                   asig.id_asignacion === actualizada.id_asignacion ? actualizada : asig

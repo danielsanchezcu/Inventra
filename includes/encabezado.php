@@ -2,6 +2,18 @@
 $base = '/Inventra-final/';
 ?>
 
+<?php
+// Configuración base global para Inventra
+
+// Detecta automáticamente si se usa HTTP o HTTPS
+$protocolo = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Construye la URL base completa
+$base = $protocolo . $_SERVER['HTTP_HOST'] . "/";
+
+// Ejemplo de resultado: http://localhost:8080/
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -427,7 +439,7 @@ document.addEventListener('click', (e) => {
                 <div class="submenu">
                     <a href="<?= $base ?>registro.php">Registrar Equipo</a>
                     <a href="<?= $base ?>asignar.php">Asignar Equipo</a>
-                    <a href="<?= $base ?>consultar-inventario/index.php">Consultar Inventario</a>
+                    <a href="<?= $base ?>consultar_inventario.php">Consultar Inventario</a>
                 </div>
             </details>
 

@@ -62,7 +62,7 @@ require("includes/encabezado.php");
             <select id="contrato" name="contrato" required>
               <option value="" disabled selected>Seleccione una opción</option>
               <option value="planta">Planta</option>
-              <option value="prestacion">Prestación de servicios</option>
+              <option value="prestacion de servicios">Prestación de servicios</option>
               <option value="pasante">Pasante</option>
               <option value="temporal">Temporal</option>
             </select>

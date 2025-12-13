@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $extension = $data['extension_telefono'];
     $accesorios = $data['accesorios_adicionales'];
     $fecha_asignacion = $data['fecha_asignacion'];
-    $fecha_devolucion = $data['fecha_devolucion'];
+    $fecha_devolucion = !empty($data['fecha_devolucion']) ? $data['fecha_devolucion'] : null;
     $observaciones = $data['observaciones'];
 
     // Insertar en la base de datos

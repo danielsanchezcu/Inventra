@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inicio de Sesión | Inventra</title>
+  <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="stylelogin.css">
+  <link rel="stylesheet" href="css/stylelogin.css">
 
   <!-- Tipografía Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
@@ -46,6 +47,9 @@
       </form>
 
       <!-- Pie -->
+      <div class="pie-login">
+        ¿Olvidaste tu contraseña? <a href="#">Recupérala aquí</a>
+      </div>
         <h3>© 2025 | INVENTRA</h3>
         <h3>Desarrollado por Daniel Felipe Sánchez Currea</h3>
     </div>

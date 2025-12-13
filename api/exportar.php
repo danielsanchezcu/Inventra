@@ -129,15 +129,19 @@ try {
     if (empty($rows)) {
         $mpdf = new \Mpdf\Mpdf(['default_font' => 'Montserrat']);
 
+        // ✅ Rutas absolutas dentro del contenedor Docker
+        $basePath = '/var/www/html/imagenes/';
+        $mpdf->showImageErrors = true;
+
         // ✅ Marca de agua (logo translúcido)
-        $mpdf->SetWatermarkImage('../imagenes/Logo inventra.png', 0.15, [120, 120]);
+        $mpdf->SetWatermarkImage($basePath . 'Logo inventra.png', 0.15, [120, 120]);
         $mpdf->showWatermarkImage = true;
 
         // Encabezado del PDF
         $html = '
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
             <div style="flex: 1;">
-                <img src="../imagenes/logo2.png" width="80">
+                <img src="' . $basePath . 'logo2.png" width="80">
             </div>
             <div style="flex: 3; text-align: center;">
                 <h2 style="margin: 0; font-weight: bold;">Reporte Inventra</h2>
@@ -218,16 +222,22 @@ try {
     if ($format === 'pdf') {
         $mpdf = new Mpdf(['format' => 'A4-L', 'margin_top' => 60]);
 
-        // ✅ Marca de agua también para reportes con resultados
-        $mpdf->SetWatermarkImage('../imagenes/Logo inventra.png', 0.15, [120, 120]);
+        // ✅ Rutas absolutas dentro de Docker
+        $basePath = '/var/www/html/imagenes/';
+        $mpdf->showImageErrors = true;
+
+        // ✅ Marca de agua
+        $mpdf->SetWatermarkImage($basePath . 'Logo inventra.png', 0.15, [120, 120]);
         $mpdf->showWatermarkImage = true;
 
-        $logoPath = __DIR__ . '/../imagenes/logo2.png';
+        // ✅ Logo principal
+        $logoPath = $basePath . 'logo2.png';
+
         $headerHTML = '
             <table width="100%" cellpadding="0" cellspacing="0" style="border:none;">
                 <tr>
                     <td width="20%" align="left" style="border:none;">
-                        ' . (file_exists($logoPath) ? '<img src="' . $logoPath . '" width="80">' : '') . '
+                        <img src="' . $logoPath . '" width="80">
                     </td>
                     <td width="80%" align="center" style="border:none;">
                         <div style="font-family:Montserrat, sans-serif;">
@@ -280,3 +290,4 @@ try {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }
+?>

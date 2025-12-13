@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: inventra-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: inventrabd
+    volumes:
+      - ./db/inventrabd.sql:/docker-entrypoint-initdb.d/inventrabd.sql:ro
+      - inventra-db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: inventra-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root1234
+    ports:
+      - "8081:80"
+
+  backend:
+    build: ./backend
+    container_name: inventra-backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root1234
+      DB_NAME: inventrabd
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+
+volumes:
+  inventra-db_data:
