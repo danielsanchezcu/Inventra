@@ -1,4 +1,5 @@
 <?php 
+require_once "includes/header_sesion.php";
 include 'includes/conexion.php';
 
 if ($_POST) {

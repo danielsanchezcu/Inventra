@@ -25,6 +25,9 @@ try {
     $rows = [];
     $params = [];
 
+    // --------------------------
+    // GENERAR CONSULTA SEGÚN REPORTE
+    // --------------------------
     switch ($report) {
         case 'asignados':
             $sql = "SELECT a.id_asignacion, a.nombres, a.apellidos, a.area, a.sede, a.cargo,
@@ -125,81 +128,15 @@ try {
     $stmt->execute($params);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // === Si no hay resultados: PDF informativo ===
-    if (empty($rows)) {
-        $mpdf = new \Mpdf\Mpdf(['default_font' => 'Montserrat']);
+    // --------------------------
+    // RUTAS DE IMÁGENES PARA PDF (JPG)
+    // --------------------------
+    $basePath = '/var/www/html/imagenes/';
+    $logoHeader = $basePath . 'logo.jpg';       // imagen principal JPG
+    $logoWatermark = $basePath . 'logo.jpg';    // misma imagen para marca de agua
 
-        // ✅ Rutas absolutas dentro del contenedor Docker
-        $basePath = '/var/www/html/imagenes/';
-        $mpdf->showImageErrors = true;
-
-        // ✅ Marca de agua (logo translúcido)
-        $mpdf->SetWatermarkImage($basePath . 'Logo inventra.png', 0.15, [120, 120]);
-        $mpdf->showWatermarkImage = true;
-
-        // Encabezado del PDF
-        $html = '
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <div style="flex: 1;">
-                <img src="' . $basePath . 'logo2.png" width="80">
-            </div>
-            <div style="flex: 3; text-align: center;">
-                <h2 style="margin: 0; font-weight: bold;">Reporte Inventra</h2>
-                <p style="margin: 3px 0;">Tu sistema para la gestión inteligente de equipos y asignaciones</p>
-                <p style="margin: 0; font-size: 12px;">Desarrollado por <b>Daniel Felipe Sánchez</b></p>
-            </div>
-        </div>
-        <hr style="margin: 10px 0;">
-
-        <div style="text-align: center; margin-top: 60px;">
-            <p style="font-size: 20px; font-weight: bold; color: #333;">
-                ⚠ No se encontraron datos para este informe.
-            </p>
-            <p style="font-size: 14px; color: #555;">
-                Verifica los filtros o intenta con un rango de fechas diferente.
-            </p>
-        </div>
-
-        <hr style="margin-top: 80px;">
-        <p style="text-align: right; font-size: 10px; color: gray;">
-            Fecha de generación: ' . date("d/m/Y H:i:s") . '
-        </p>';
-
-        $nombreReporte = match ($report) {
-            'asignados' => 'Equipos-Asignados',
-            'disponibles' => 'Equipos-Disponibles',
-            'mantenimiento' => 'Equipos-Mantenimiento',
-            'asignaciones_fecha' => 'Asignaciones-por-Fecha',
-            'historial' => 'Historial-Mantenimientos',
-            default => 'Reporte-Inventra',
-        };
-
-        $mpdf->WriteHTML($html);
-        $mpdf->Output("{$nombreReporte}.pdf", 'D');
-        exit;
-    }
-
-    // === Crear Excel ===
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-    $sheet->setTitle('Reporte Inventra');
-    $headers = array_keys($rows[0]);
-
-    $col = 'A';
-    foreach ($headers as $header) {
-        $sheet->setCellValue($col . '1', strtoupper(str_replace('_', ' ', $header)));
-        $col++;
-    }
-
-    $rowNum = 2;
-    foreach ($rows as $row) {
-        $col = 'A';
-        foreach ($headers as $header) {
-            $sheet->setCellValue($col . $rowNum, $row[$header]);
-            $col++;
-        }
-        $rowNum++;
-    }
+    if (!file_exists($logoHeader)) throw new Exception("No se encuentra la imagen principal: $logoHeader");
+    if (!file_exists($logoWatermark)) throw new Exception("No se encuentra la imagen de marca de agua: $logoWatermark");
 
     $nombreReporte = match ($report) {
         'asignados' => 'Equipos-Asignados',
@@ -210,6 +147,69 @@ try {
         default => 'Reporte-Inventra',
     };
 
+    // --------------------------
+    // PDF INFORMATIVO SI NO HAY DATOS
+    // --------------------------
+    if (empty($rows)) {
+        $mpdf = new Mpdf(['default_font' => 'Montserrat']);
+        $mpdf->showImageErrors = true;
+        $mpdf->SetWatermarkImage($logoWatermark, 0.15, [120, 120]);
+        $mpdf->showWatermarkImage = true;
+
+        $html = '
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <div style="flex: 1;">
+                <img src="' . $logoHeader . '" width="80">
+            </div>
+            <div style="flex: 3; text-align: center;">
+                <h2 style="margin: 0; font-weight: bold;">Reporte Inventra</h2>
+                <p style="margin: 3px 0;">Tu sistema para la gestión inteligente de equipos y asignaciones</p>
+                <p style="margin: 0; font-size: 12px;">Desarrollado por <b>Daniel Felipe Sánchez</b></p>
+            </div>
+        </div>
+        <hr style="margin: 10px 0;">
+        <div style="text-align: center; margin-top: 60px;">
+            <p style="font-size: 20px; font-weight: bold; color: #333;">
+                ⚠ No se encontraron datos para este informe.
+            </p>
+            <p style="font-size: 14px; color: #555;">
+                Verifica los filtros o intenta con un rango de fechas diferente.
+            </p>
+        </div>
+        <hr style="margin-top: 80px;">
+        <p style="text-align: right; font-size: 10px; color: gray;">
+            Fecha de generación: ' . date("d/m/Y H:i:s") . '
+        </p>';
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output("{$nombreReporte}.pdf", 'D');
+        exit;
+    }
+
+    // --------------------------
+    // CREAR EXCEL
+    // --------------------------
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setTitle('Reporte Inventra');
+    $headers = array_keys($rows[0]);
+
+    $col = 'A';
+    foreach ($headers as $header) {
+        $sheet->setCellValue($col . '1', strtoupper(str_replace('_', ' ', $header ?? '')));
+        $col++;
+    }
+
+    $rowNum = 2;
+    foreach ($rows as $row) {
+        $col = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($col . $rowNum, $row[$header] ?? '');
+            $col++;
+        }
+        $rowNum++;
+    }
+
     if ($format === 'excel') {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"{$nombreReporte}.xlsx\"");
@@ -218,30 +218,24 @@ try {
         exit;
     }
 
-    // === Generar PDF ===
+    // --------------------------
+    // GENERAR PDF
+    // --------------------------
     if ($format === 'pdf') {
         $mpdf = new Mpdf(['format' => 'A4-L', 'margin_top' => 60]);
-
-        // ✅ Rutas absolutas dentro de Docker
-        $basePath = '/var/www/html/imagenes/';
         $mpdf->showImageErrors = true;
-
-        // ✅ Marca de agua
-        $mpdf->SetWatermarkImage($basePath . 'Logo inventra.png', 0.15, [120, 120]);
+        $mpdf->SetWatermarkImage($logoWatermark, 0.15, [120, 120]);
         $mpdf->showWatermarkImage = true;
-
-        // ✅ Logo principal
-        $logoPath = $basePath . 'logo2.png';
 
         $headerHTML = '
             <table width="100%" cellpadding="0" cellspacing="0" style="border:none;">
                 <tr>
                     <td width="20%" align="left" style="border:none;">
-                        <img src="' . $logoPath . '" width="80">
+                        <img src="' . $logoHeader . '" width="80">
                     </td>
                     <td width="80%" align="center" style="border:none;">
                         <div style="font-family:Montserrat, sans-serif;">
-                            <h2 style="margin:0;">Reporte de ' . htmlspecialchars($nombreReporte) . '</h2>
+                            <h2 style="margin:0;">Reporte de ' . htmlspecialchars($nombreReporte ?? '', ENT_QUOTES, 'UTF-8') . '</h2>
                             <p style="margin:2px 0; font-size:12px;">Tu sistema para la gestión inteligente de equipos y asignaciones</p>
                             <p style="margin:0; font-size:11px;">Desarrollado por <b>Daniel Felipe Sánchez</b></p>
                         </div>
@@ -268,13 +262,13 @@ try {
             <table>
                 <thead><tr>';
         foreach ($headers as $header) {
-            $html .= '<th>' . htmlspecialchars($header) . '</th>';
+            $html .= '<th>' . htmlspecialchars($header ?? '', ENT_QUOTES, 'UTF-8') . '</th>';
         }
         $html .= '</tr></thead><tbody>';
         foreach ($rows as $row) {
             $html .= '<tr>';
             foreach ($headers as $header) {
-                $html .= '<td>' . htmlspecialchars($row[$header]) . '</td>';
+                $html .= '<td>' . htmlspecialchars($row[$header] ?? '', ENT_QUOTES, 'UTF-8') . '</td>';
             }
             $html .= '</tr>';
         }

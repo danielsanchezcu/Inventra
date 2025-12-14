@@ -1,7 +1,13 @@
 <?php
 session_start();
-session_unset();   // limpia variables
-session_destroy(); // destruye la sesión
-header("Location: index.php"); // redirige al login
+
+// Limpia todas las variables de sesión
+session_unset();
+
+// Destruye la sesión
+session_destroy();
+
+// Redirige al login
+header("Location: index.php");
 exit();
 ?>

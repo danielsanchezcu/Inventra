@@ -1,5 +1,6 @@
 <?php 
-session_start();  
+session_start();
+require_once "includes/header_sesion.php";
 require("includes/encabezado.php"); 
 
 // Redirigir a login si no hay sesión activa

@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once "includes/header_sesion.php";
 // Redirigir a login si no hay sesión activa
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");

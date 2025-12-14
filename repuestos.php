@@ -1,4 +1,5 @@
 <?php 
+require_once "includes/header_sesion.php";
 require("includes/encabezado.php");
 include 'includes/conexion.php';
 

@@ -1,3 +1,6 @@
+<php?
+require_once "includes/header_sesion.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
