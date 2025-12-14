@@ -19,7 +19,8 @@ $base = $protocolo . $_SERVER['HTTP_HOST'] . "/";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventra Web</title>
+    <link rel="icon" type="imagenes/Logo inventra.png" href="imagenes/Logo inventra.png">
+    
 
     <!-- Fuentes y librerías externas -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

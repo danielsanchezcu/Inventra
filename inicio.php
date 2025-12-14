@@ -14,7 +14,7 @@ $nombreCompleto = isset($_SESSION['nombre_usuario']) ? $_SESSION['nombre_usuario
 $nombre = explode(' ', $nombreCompleto)[0];
 ?>
 <link rel="stylesheet" href="<?= $base ?>css/styleinicio.css">
-
+<title>Inventra Web - Inicio </title>
 <main class="main-bienvenida">
   <div class="contenido-inicio">
     <div class="logo-bienvenida">

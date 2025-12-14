@@ -8,7 +8,7 @@ require("includes/encabezado.php");
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reportes - Inventra</title>
+  <title>Inventra Web - Informes</title>
   <link rel="stylesheet" href="css/styleinformes.css">
   <script src="https://kit.fontawesome.com/a2e0e9ad4d.js" crossorigin="anonymous"></script>
 </head>

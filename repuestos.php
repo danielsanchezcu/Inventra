@@ -106,6 +106,7 @@ if ($_POST) {
 ?>
 <link rel="stylesheet" href="css/stylerepuestos.css">
 <main class="main">
+<title>Inventra Web - Agregar Repuesto</title>
     <div class="main-header">
         <h2>Gestión de Repuestos</h2>
     </div>

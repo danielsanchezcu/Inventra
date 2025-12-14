@@ -8,4 +8,5 @@ require("includes/encabezado.php");
 <!-- Carga los archivos compilados de React -->
 <link rel="stylesheet" href="consultar-inventario/static/css/main.257c08cc.css">
 <script src="consultar-inventario/static/js/main.0c0b318f.js" defer></script>
+<title>Inventra Web - Consultar Inventario</title>
 
